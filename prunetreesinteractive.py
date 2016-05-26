@@ -165,7 +165,7 @@ def make_other_groups(gene):
 	else:
 		######Showing the tree######
 		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-		clade_tree.prune(species_keep)
+		clade_tree.prune(species_keep,preserve_branch_length=True)
 		print(clade_tree)
 		print("\nThis is the OTHER tree. There are "+str(len(species_keep))+" total gene copies.\n")
 		t=[item[0:3] for item in species_keep]
@@ -180,7 +180,7 @@ def make_other_groups(gene):
 			cut_list=[i for i in cut_list if i not in cut_gene_list]
 			if set(cut_gene_list).issubset(species_keep):
 				try:
-					clade_tree.prune(cut_list)
+					clade_tree.prune(cut_list,preserve_branch_length=True)
 					print (clade_tree)
 				except ValueError:
 					print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
@@ -238,7 +238,7 @@ def make_all_lists(gene):
 def cut_stray_genes(gene, species_keep, species_list):
 	######Showing the tree######
 	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-	clade_tree.prune(species_keep)
+	clade_tree.prune(species_keep,preserve_branch_length=True)
 	print(clade_tree)
 	print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
 	cut_list=species_keep
@@ -253,7 +253,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 		cut_list=[i for i in cut_list if i not in cut_gene_list]
 		if set(cut_gene_list).issubset(species_keep):
 			try:
-				clade_tree.prune(cut_list)
+				clade_tree.prune(cut_list,preserve_branch_length=True)
 				print (clade_tree)
 				count_dict={species:(cut_list.count(species)) for species in species_list}
 				print ("\nNumber of gene copies per species:")
@@ -268,7 +268,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 ######Making groups#####################################################
 def define_groups(gene, cut_list, species_list):
 	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-	clade_tree.prune(cut_list)
+	clade_tree.prune(cut_list,preserve_branch_length=True)
 	n=1
 	######Designating whole clade duplications######
 	choice=input("\nWould you like to make a group? (y/n)")
@@ -309,7 +309,7 @@ def define_groups(gene, cut_list, species_list):
 			else:
 				choice2=input("\nWould you like to view the grass tree with the group removed? (y/n)")
 				if choice2[0] == "y":
-					clade_tree.prune(cut_list)
+					clade_tree.prune(cut_list,preserve_branch_length=True)
 					print(clade_tree)
 					count_dict={species:(cut_list.count(species)) for species in species_list}
 					print ("\nNumber of gene copies per species:")
