@@ -166,6 +166,8 @@ def make_other_groups(gene):
 		######Showing the tree######
 		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 		clade_tree.prune(species_keep,preserve_branch_length=True)
+		R=clade_tree.get_midpoint_outgroup()
+		clade_tree.set_outgroup(R)
 		print(clade_tree)
 		print("\nThis is the OTHER tree. There are "+str(len(species_keep))+" total gene copies.\n")
 		t=[item[0:3] for item in species_keep]
@@ -181,6 +183,8 @@ def make_other_groups(gene):
 			if set(cut_gene_list).issubset(species_keep):
 				try:
 					clade_tree.prune(cut_list,preserve_branch_length=True)
+					R=clade_tree.get_midpoint_outgroup()
+					clade_tree.set_outgroup(R)
 					print (clade_tree)
 				except ValueError:
 					print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
@@ -239,10 +243,13 @@ def cut_stray_genes(gene, species_keep, species_list):
 	######Showing the tree######
 	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
+	R=clade_tree.get_midpoint_outgroup()
+	clade_tree.set_outgroup(R)
 	print(clade_tree)
 	print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
 	cut_list=species_keep
-	count_dict={species:(cut_list.count(species)) for species in species_list}
+	l=[i[0:3] for i in cut_list]
+	count_dict={species:(l.count(species[0:3])) for species in species_list}
 	print ("\nNumber of gene copies per species:")
 	print (count_dict)
 	######Removing stray within-clade gene copies from the clade######
@@ -254,6 +261,8 @@ def cut_stray_genes(gene, species_keep, species_list):
 		if set(cut_gene_list).issubset(species_keep):
 			try:
 				clade_tree.prune(cut_list,preserve_branch_length=True)
+				R=clade_tree.get_midpoint_outgroup()
+				clade_tree.set_outgroup(R)
 				print (clade_tree)
 				count_dict={species:(cut_list.count(species)) for species in species_list}
 				print ("\nNumber of gene copies per species:")
@@ -310,8 +319,11 @@ def define_groups(gene, cut_list, species_list):
 				choice2=input("\nWould you like to view the grass tree with the group removed? (y/n)")
 				if choice2[0] == "y":
 					clade_tree.prune(cut_list,preserve_branch_length=True)
+					R=clade_tree.get_midpoint_outgroup()
+					clade_tree.set_outgroup(R)
 					print(clade_tree)
-					count_dict={species:(cut_list.count(species)) for species in species_list}
+					l=[i[0:3] for i in cut_list]
+					count_dict={species:(l.count(species[0:3])) for species in species_list}
 					print ("\nNumber of gene copies per species:")
 					print (count_dict)
 				choice=input("\nWould you like to make another group for this clade? (y/n)")
