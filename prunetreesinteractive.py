@@ -168,7 +168,8 @@ def make_other_groups(gene):
 		clade_tree.prune(species_keep,preserve_branch_length=True)
 		R=clade_tree.get_midpoint_outgroup()
 		clade_tree.set_outgroup(R)
-		print(clade_tree)
+		clade_tree.render("treeimage.png")
+		os.system("open treeimage.png")
 		print("\nThis is the OTHER tree. There are "+str(len(species_keep))+" total gene copies.\n")
 		t=[item[0:3] for item in species_keep]
 		count_dict={species:(t.count(species)) for species in species_list}
@@ -185,7 +186,8 @@ def make_other_groups(gene):
 					clade_tree.prune(cut_list,preserve_branch_length=True)
 					R=clade_tree.get_midpoint_outgroup()
 					clade_tree.set_outgroup(R)
-					print (clade_tree)
+					clade_tree.render("treeimage.png")
+					os.system("open treeimage.png")
 				except ValueError:
 					print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
 			else:
@@ -245,7 +247,8 @@ def cut_stray_genes(gene, species_keep, species_list):
 	clade_tree.prune(species_keep,preserve_branch_length=True)
 	R=clade_tree.get_midpoint_outgroup()
 	clade_tree.set_outgroup(R)
-	print(clade_tree)
+	clade_tree.render("treeimage.png")
+	os.system("open treeimage.png")
 	print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
 	cut_list=species_keep
 	l=[i[0:3] for i in cut_list]
@@ -263,7 +266,8 @@ def cut_stray_genes(gene, species_keep, species_list):
 				clade_tree.prune(cut_list,preserve_branch_length=True)
 				R=clade_tree.get_midpoint_outgroup()
 				clade_tree.set_outgroup(R)
-				print (clade_tree)
+				clade_tree.render("treeimage.png")
+				os.system("open treeimage.png")
 				count_dict={species:(cut_list.count(species)) for species in species_list}
 				print ("\nNumber of gene copies per species:")
 				print (count_dict)
@@ -321,7 +325,8 @@ def define_groups(gene, cut_list, species_list):
 					clade_tree.prune(cut_list,preserve_branch_length=True)
 					R=clade_tree.get_midpoint_outgroup()
 					clade_tree.set_outgroup(R)
-					print(clade_tree)
+					clade_tree.render("treeimage.png")
+					os.system("open treeimage.png")
 					l=[i[0:3] for i in cut_list]
 					count_dict={species:(l.count(species[0:3])) for species in species_list}
 					print ("\nNumber of gene copies per species:")
