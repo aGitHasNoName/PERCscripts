@@ -170,7 +170,7 @@ def make_other_groups(gene):
 		######Checking that there is only one gene per species######
 		check_set={str(item[0:3]) for item in group_list}
 		while len(group_list) != len(check_set):
-			view_counts(cut_list)
+			view_counts(cut_list, species_list)
 			group_str=input("\nYou can only have one gene per species. Enter more genes to cut, separated by a space: ")
 			group_list=[item for item in group_list if item not in group_str]
 			check_set={str(item[0:3]) for item in group_list}
@@ -220,7 +220,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 	view_rooted_tree(clade_tree)
 	print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
 	cut_list=species_keep
-	view_counts(cut_list)
+	view_counts(cut_list, species_list)
 	######Removing stray within-clade gene copies from the clade######
 	cut_question=input("\nAre there stray genes to cut? (y/n)")
 	while cut_question[0]== "y":
@@ -231,7 +231,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 			try:
 				clade_tree.prune(cut_list,preserve_branch_length=True)
 				view_rooted_tree(clade_tree)
-				view_counts(cut_list)
+				view_counts(cut_list, species_list)
 			except ValueError:
 				print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
 		else:
@@ -282,7 +282,7 @@ def define_groups(gene, cut_list, species_list):
 				if choice2[0] == "y":
 					clade_tree.prune(cut_list,preserve_branch_length=True)
 					view_rooted_tree(clade_tree)
-					view_counts(cut_list)
+					view_counts(cut_list, species_list)
 				choice=input("\nWould you like to make another group for this clade? (y/n)")
 		else: 
 			print("\nGroup abandoned.")
