@@ -321,14 +321,14 @@ def check_single_group(group_list):
 	return (group_list)
 		
 ######Saving group as file and add group to master list###################
-def saving_group(gene, group_list):
+def saving_group(gene, group_list, clade_name):
 	######Saving gene group as a file######
-	with open(gene+"/"+gene+"_"+str(n)+"_grass_prune.txt", "a") as group_file:
+	with open(gene+"/"+gene+"_"+str(n)+"_"+clade_name+"_prune.txt", "a") as group_file:
 		for i in group_list:
 			group_file.write(i+"\n")
 	######Saving name of group to a master list######
 	with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
-		master.write(gene+"_"+str(n)+"_grass\n")
+		master.write(gene+"_"+str(n)+"_"+clade_name+"\n")
 
 ######Viewing rooted tree in png file#####################################
 def view_rooted_tree(clade_tree):
