@@ -21,11 +21,21 @@ if (sys.version_info < (3,0)):
 
 ######Runs all functions################################################
 def prune_gene(gene):
+	gene=str(gene)
 	count_summarize(gene)
-	if gene_type="single":
+	if gene_type="small":
+		small_family(gene)
+	elif gene_type="single":
 		single_copy(gene)
 	elif gene_type="large":
-		pre_prune(gene)
+		print ("\nGene family is large. Please view the tree.")
+		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+		view_rooted_tree(clade_tree)
+		choice2=input("\nWould you like to split this gene family into multiple families? (y/n)")
+		if choice2[0]=="y":
+			pre_prune(gene)
+		else:
+			choice=input("\nContinue with pruning as single gene family? (y/n)")
 	else:
 		choice=input("\nContinue with pruning? (y/n)")
 	if choice[0]=="y":
@@ -38,7 +48,6 @@ def prune_gene(gene):
 
 ######GENE SUMMARY#######################################################
 def count_summarize(gene):
-	gene=str(gene)
 	species_list=[line.rstrip() for line in open("species_list_all.txt")]
 	grass_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
 	brass_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
@@ -50,7 +59,12 @@ def count_summarize(gene):
 	f=re.sub("\d|,|:|\(|\)|\.|;", " ", f)
 	l=[i for i in f.split()]
 	count_dict={species:(l.count(species)) for species in species_list}	
-
+	
+	slist=[key for key in count_dict if count_dict[key] > 0]
+	n_species=len(slist)
+	clist=[value for value in count_dict.values()]
+	n_copies=sum(clist)
+	
 	grass_count={key:value for key,value in count_dict.items() if key in grass_list}
 	brass_count={key:value for key,value in count_dict.items() if key in brass_list}
 	fab_count={key:value for key,value in count_dict.items() if key in fab_list}
@@ -64,21 +78,33 @@ def count_summarize(gene):
 	wordssf="\n\nFor seedfree:\n"
 	wordso="\n\nFor all other species:\n"
 	print (words, wordsg, grass_count, wordsb, brass_count, wordsf, fab_count, wordssf, seedfree_count, wordso, other_count)
-
+	
+	if n_species < 36:
+		gene_type="small"
+	elif n_species == n_copies:
+		gene_type="single"
+	elif n_copies > 80:
+		gene_type="large"
+	else:
+		gene_type="normal"
 
 	return (gene_type)
 
+########SMALL GENE FAMILIES###############################################
+def small_family(gene):
+	print ("\nToo few species included.\n" +n_species+" species included. \nAdding gene to small_family_list.txt")
+	
+
 ########SINGLE COPY GENES#################################################
 def single_copy(gene):
-	gene=str(gene)
+	print ()
 
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
-	gene=str(gene)
+	print ()
 
 ########GRASSES###########################################################
 def make_grass_groups(gene):
-	gene=str(gene)
 	clade_name="grass"
 	######Getting all grass gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
@@ -97,7 +123,6 @@ def make_grass_groups(gene):
 		
 ########BRASSES###########################################################
 def make_brass_groups(gene):
-	gene=str(gene)
 	clade_name="brass"
 	######Getting all brass gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
@@ -116,7 +141,6 @@ def make_brass_groups(gene):
 
 ##########FABS############################################################
 def make_fab_groups(gene):
-	gene=str(gene)
 	clade_name="fab"
 	######Getting all fab gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
@@ -135,7 +159,6 @@ def make_fab_groups(gene):
 		
 ##########SEEDFREE#########################################################
 def make_seedfree_groups(gene):
-	gene=str(gene)
 	clade_name="seedfree"
 	######Getting all seedfree gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
@@ -154,7 +177,6 @@ def make_seedfree_groups(gene):
 
 ########OTHERS##############################################################
 def make_other_groups(gene):
-	gene=str(gene)
 	######Getting all other gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
@@ -189,7 +211,6 @@ def make_other_groups(gene):
 
 ############ALL#########################################################
 def make_all_lists(gene):
-	gene=str(gene)
 	master_list=[line.rstrip() for line in open(gene+"/"+gene+"_master_tree_list.txt")]
 	g=[i for i in master_list if "grass" in i]
 	b=[i for i in master_list if "brass" in i]
