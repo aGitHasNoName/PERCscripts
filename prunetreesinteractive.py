@@ -346,7 +346,7 @@ def choose_clade(clade_tree):
 	return(group_list)
 	
 ######Viewing the number of gene copies for each species###################
-def view_counts(cut_list):
+def view_counts(cut_list, species_list):
 	l=[i[0:3] for i in cut_list]
 	count_dict={species:(l.count(species[0:3])) for species in species_list}
 	print ("\nNumber of gene copies per species:")
