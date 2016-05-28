@@ -1,7 +1,5 @@
-import re
-import sys
+import re, sys, itertools, os
 from ete3 import PhyloTree
-import itertools
 ########################################################
 #This script takes a fasta file and walks you through the pruning of the gene.
 
@@ -15,8 +13,8 @@ import itertools
 
 ######Checks for Python3################################
 if (sys.version_info < (3,0)):
-print("Python 3 required!\n")
-sys.exit(1)
+	print("Python 3 required!\n")
+	sys.exit(1)
 
 
 ######MAIN FUNCTIONS###############################################################
@@ -81,6 +79,7 @@ def pre_prune(gene):
 ########GRASSES###########################################################
 def make_grass_groups(gene):
 	gene=str(gene)
+	clade_name="grass"
 	######Getting all grass gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
@@ -99,6 +98,7 @@ def make_grass_groups(gene):
 ########BRASSES###########################################################
 def make_brass_groups(gene):
 	gene=str(gene)
+	clade_name="brass"
 	######Getting all brass gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
@@ -117,6 +117,7 @@ def make_brass_groups(gene):
 ##########FABS############################################################
 def make_fab_groups(gene):
 	gene=str(gene)
+	clade_name="fab"
 	######Getting all fab gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
@@ -135,6 +136,7 @@ def make_fab_groups(gene):
 ##########SEEDFREE#########################################################
 def make_seedfree_groups(gene):
 	gene=str(gene)
+	clade_name="seedfree"
 	######Getting all seedfree gene copies######
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
