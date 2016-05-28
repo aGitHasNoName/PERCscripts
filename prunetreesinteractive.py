@@ -163,37 +163,15 @@ def make_other_groups(gene):
 	if len(species_keep) == 0:
 		print ("\nThere are no other genes in this gene family.")
 	else:
-		######Showing the tree######
-		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-		clade_tree.prune(species_keep,preserve_branch_length=True)
-		view_rooted_tree(clade_tree)
-		print("\nThis is the OTHER tree. There are "+str(len(species_keep))+" total gene copies.\n")
-		t=[item[0:3] for item in species_keep]
-		count_dict={species:(t.count(species)) for species in species_list}
-		print (count_dict)
 		######Removing stray within-clade gene copies from the clade######
-		cut_question=input("\nAre there stray genes to cut? (y/n)")
-		cut_list=species_keep
-		while cut_question[0]== "y":
-			cut_gene_str=input("Enter genes to cut, separated by a space: ")
-			cut_gene_list=[item for item in cut_gene_str.split()]
-			cut_list=[i for i in cut_list if i not in cut_gene_list]
-			if set(cut_gene_list).issubset(species_keep):
-				try:
-					clade_tree.prune(cut_list,preserve_branch_length=True)
-					view_rooted_tree(clade_tree)
-				except ValueError:
-					print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
-			else:
-				print ("\nAt least one gene is not found on the tree. You entered:\n"+cut_gene_str+"\nCut abandoned.")
-			cut_question=input("\nAre there more genes to cut? (y/n)")
+		cut_stray_genes(gene, species_keep, species_list)
 		######Making it a group######
 		group_list=cut_list
 		######Checking that there is only one gene per species######
 		check_set={str(item[0:3]) for item in group_list}
 		while len(group_list) != len(check_set):
-			print (group_list)
-			group_str=input("\nYou can only have one gene per species. Enter genes to cut, separated by a space: ")
+			view_counts(cut_list)
+			group_str=input("\nYou can only have one gene per species. Enter more genes to cut, separated by a space: ")
 			group_list=[item for item in group_list if item not in group_str]
 			check_set={str(item[0:3]) for item in group_list}
 		print("\nThere are "+str(len(group_list))+" genes in this group.\nGroup looks like:")
