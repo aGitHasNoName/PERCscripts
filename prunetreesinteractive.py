@@ -242,10 +242,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 	view_rooted_tree(clade_tree)
 	print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
 	cut_list=species_keep
-	l=[i[0:3] for i in cut_list]
-	count_dict={species:(l.count(species[0:3])) for species in species_list}
-	print ("\nNumber of gene copies per species:")
-	print (count_dict)
+	view_counts(cut_list)
 	######Removing stray within-clade gene copies from the clade######
 	cut_question=input("\nAre there stray genes to cut? (y/n)")
 	while cut_question[0]== "y":
@@ -256,9 +253,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 			try:
 				clade_tree.prune(cut_list,preserve_branch_length=True)
 				view_rooted_tree(clade_tree)
-				count_dict={species:(cut_list.count(species)) for species in species_list}
-				print ("\nNumber of gene copies per species:")
-				print (count_dict)
+				view_counts(cut_list)
 			except ValueError:
 				print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
 		else:
@@ -309,10 +304,7 @@ def define_groups(gene, cut_list, species_list):
 				if choice2[0] == "y":
 					clade_tree.prune(cut_list,preserve_branch_length=True)
 					view_rooted_tree(clade_tree)
-					l=[i[0:3] for i in cut_list]
-					count_dict={species:(l.count(species[0:3])) for species in species_list}
-					print ("\nNumber of gene copies per species:")
-					print (count_dict)
+					view_counts(cut_list)
 				choice=input("\nWould you like to make another group for this clade? (y/n)")
 		else: 
 			print("\nGroup abandoned.")
@@ -345,13 +337,20 @@ def view_rooted_tree(clade_tree):
 	clade_tree.render("treeimage.png")
 	os.system("open treeimage.png")
 	
-######Make a group from one monophyletic clade############################
+######Making a group from one monophyletic clade###########################
 def choose_clade(clade_tree):
 	leaf1=input("\nEnter the gene on one end of the group.")
 	leaf2=input("\nEnter the gene on the other end of the group.")
 	mrca = clade_tree.get_common_ancestor(leaf1,leaf2)
 	group_list=mrca.get_leaf_names()
 	return(group_list)
+	
+######Viewing the number of gene copies for each species###################
+def view_counts(cut_list):
+	l=[i[0:3] for i in cut_list]
+	count_dict={species:(l.count(species[0:3])) for species in species_list}
+	print ("\nNumber of gene copies per species:")
+	print (count_dict)
 
 ############RUN THE PROGRAM##########################################################
 gene=sys.argv[1]
