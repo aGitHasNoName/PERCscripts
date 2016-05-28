@@ -278,10 +278,7 @@ def define_groups(gene, cut_list, species_list):
 		if choice4[0]=="a":
 			group_list=cut_list
 		elif choice4[0]=="c":
-			leaf1=input("\nEnter the gene on one end of the group.")
-			leaf2=input("\nEnter the gene on the other end of the group.")
-			mrca = clade_tree.get_common_ancestor(leaf1,leaf2)
-			group_list=mrca.get_leaf_names()
+			choose_clade(clade_tree)
 		else:
 			group_str=input("\nEnter genes for the group, separated by a space: ")
 			group_list=[item for item in group_str.split()]
@@ -308,7 +305,7 @@ def define_groups(gene, cut_list, species_list):
 				choice="n"
 			######Preparing for next group######
 			else:
-				choice2=input("\nWould you like to view the grass tree with the group removed? (y/n)")
+				choice2=input("\nWould you like to view the tree with the group removed? (y/n)")
 				if choice2[0] == "y":
 					clade_tree.prune(cut_list,preserve_branch_length=True)
 					view_rooted_tree(clade_tree)
@@ -347,6 +344,14 @@ def view_rooted_tree(clade_tree):
 	clade_tree.set_outgroup(R)
 	clade_tree.render("treeimage.png")
 	os.system("open treeimage.png")
+	
+######Make a group from one monophyletic clade############################
+def choose_clade(clade_tree):
+	leaf1=input("\nEnter the gene on one end of the group.")
+	leaf2=input("\nEnter the gene on the other end of the group.")
+	mrca = clade_tree.get_common_ancestor(leaf1,leaf2)
+	group_list=mrca.get_leaf_names()
+	return(group_list)
 
 ############RUN THE PROGRAM##########################################################
 gene=sys.argv[1]
