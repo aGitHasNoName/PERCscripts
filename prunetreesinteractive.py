@@ -141,6 +141,23 @@ def single_copy(gene):
 
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
+	with open(gene+"/"+gene+".dup.fa.tre") as file:
+		f=file.read()
+	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
+	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	view_rooted_tree(full_tree)
+	choice=input("For the first gene, is it a monophyletic clade? (y/n)")
+	if choice[0]=="y":
+		choose_clade(full_tree)
+		prune_list=[i for i in gene_names if i not in group_list]
+		full_t2=full_tree.copy()
+		full_t2.prune(prune_list)
+		view_rooted_tree(full_t2)
+		choice2=input("\nDoes this look correct?\nIf you would like to save this as its own gene, type y.\nOtherwise, type n.")
+		if choice2[0]=="y":
+			
+		
+		
 	print ("")
 
 ########GRASSES###########################################################
@@ -383,10 +400,17 @@ def view_rooted_tree(clade_tree):
 	
 ######Making a group from one monophyletic clade###########################
 def choose_clade(clade_tree):
-	leaf1=input("\nEnter the gene on one end of the group.")
-	leaf2=input("\nEnter the gene on the other end of the group.")
-	mrca = clade_tree.get_common_ancestor(leaf1,leaf2)
-	group_list=mrca.get_leaf_names()
+	c="y:
+	while c=="y":
+		leaf1=input("\nEnter the gene on one end of the group.")
+		leaf2=input("\nEnter the gene on the other end of the group.")
+		try:
+			mrca = clade_tree.get_common_ancestor(leaf1,leaf2)
+			group_list=mrca.get_leaf_names()
+			c="n"
+		except ValueError:
+			print("\nGene name not found. Try again.")
+			c="y"
 	return(group_list)
 	
 ######Viewing the number of gene copies for each species###################
@@ -398,7 +422,7 @@ def view_counts(cut_list, species_list):
 
 ############RUN THE PROGRAM##########################################################
 gene=sys.argv[1]
-prune_gene(gene)
+main(gene)
 
 
 
