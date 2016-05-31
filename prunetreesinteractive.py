@@ -20,7 +20,7 @@ if (sys.version_info < (3,0)):
 ######MAIN FUNCTIONS###############################################################
 
 ######Runs all functions################################################
-def prune_gene(gene):
+def main(gene):
 	gene=str(gene)
 	count_summarize(gene)
 	if gene_type="small":
@@ -28,7 +28,7 @@ def prune_gene(gene):
 	elif gene_type="single":
 		single_copy(gene)
 	elif gene_type="large":
-		print ("\nGene family is large. Please view the tree.")
+		print ("\nGene family is large. Showing the tree.")
 		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 		view_rooted_tree(clade_tree)
 		choice2=input("\nWould you like to split this gene family into multiple families? (y/n)")
@@ -92,16 +92,52 @@ def count_summarize(gene):
 
 ########SMALL GENE FAMILIES###############################################
 def small_family(gene):
-	print ("\nToo few species included.\n" +n_species+" species included. \nAdding gene to small_family_list.txt")
-	
+	print ("\nGene family is too small. Gene will be added to gene_progress_list.txt as SMALL NOTDONE")
+
 
 ########SINGLE COPY GENES#################################################
 def single_copy(gene):
-	print ()
+	print ("\nGene family is single copy. No pruning required. All clades will be saved.\nGene will be added to gene_progress_list.txt as SINGLE DONE")
+	with open(gene+"/"+gene+".dup.fa.tre") as file:
+		f=file.read()
+	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
+	clade_list=["1_all","1_single"]
+	######Saving grass clade######
+	clade_name="1_grass"
+	species_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
+	group_list=[i for i in gene_names if i[0:3] in species_list or i[0:4] in species_list]
+	if len(group_list)>0:
+		saving_group(gene, group_list, clade_name)
+	######Saving brass clade######
+	clade_name="1_brass"
+	species_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
+	group_list=[i for i in gene_names if i[0:3] in species_list and i[0:4] != "Bsta"]
+	if len(group_list)>0:
+		saving_group(gene, group_list, clade_name)
+	######Saving fab clade######
+	clade_name="1_fab"
+	species_list=["Mtr","Pvu","Gma","Csa","Ppe","Mdo","Fve"]
+	group_list=[i for i in gene_names if i[0:3] in species_list]
+	if len(group_list)>0:
+		saving_group(gene, group_list, clade_name)
+	######Saving seedfree clade######
+	clade_name="1_seedfree"
+	species_list=["Smo","Ppa","Sfa","Cre","Vca","Csu","CCM","RCC","Olu"]
+	group_list=[i for i in gene_names if i[0:3] in species_list]
+	if len(group_list)>0:
+		saving_group(gene, group_list, clade_name)
+	######Saving whole tree######
+	for clade in clade_list:
+		with open(gene+"/"+gene+"_"+clade+"_prune.txt", "a") as allfile:
+			for gene1 in gene_names:
+				allfile.write(gene1+"\n")
+		with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
+			text="{}_{}\n".format(gene,clade)
+			master.write(text)
 
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
-	print ()
+	print ("")
 
 ########GRASSES###########################################################
 def make_grass_groups(gene):
@@ -263,7 +299,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 	return (cut_list)
 	
 ######Making groups#####################################################
-def define_groups(gene, cut_list, species_list):
+def define_groups(gene, cut_list, species_list, clade_name):
 	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 	clade_tree.prune(cut_list,preserve_branch_length=True)
 	n=1
@@ -292,6 +328,7 @@ def define_groups(gene, cut_list, species_list):
 			choice3=input("\nEnter n to abandon this list and start again.")
 		if choice3[0]=="y":
 			######Saving group as file and add group to master list######
+			clade_name="{}_{}".format(n, clade_name)
 			saving_group(gene, group_list)
 			n=n+1
 			cut_list=[i for i in cut_list if i not in group_list]
@@ -324,12 +361,12 @@ def check_single_group(group_list):
 ######Saving group as file and add group to master list###################
 def saving_group(gene, group_list, clade_name):
 	######Saving gene group as a file######
-	with open(gene+"/"+gene+"_"+str(n)+"_"+clade_name+"_prune.txt", "a") as group_file:
+	with open(gene+"/"+gene+"_"+clade_name+"_prune.txt", "a") as group_file:
 		for i in group_list:
 			group_file.write(i+"\n")
 	######Saving name of group to a master list######
 	with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
-		master.write(gene+"_"+str(n)+"_"+clade_name+"\n")
+		master.write(gene+"_"+clade_name+"\n")
 
 ######Viewing rooted tree in png file#####################################
 def view_rooted_tree(clade_tree):
