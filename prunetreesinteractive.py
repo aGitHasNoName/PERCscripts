@@ -92,12 +92,12 @@ def count_summarize(gene):
 
 ########SMALL GENE FAMILIES###############################################
 def small_family(gene):
-	print ("\nGene family is too small. Gene will be added to gene_progress_list.txt as SMALL NOTDONE")
-
+	with open("gene_progress_list.txt", "a") as p:
+		p.write("{}\tSMALL\tNOTDONE\n".format(gene))
+	print ("\nGene family is too small. Gene has been added to gene_progress_list.txt as SMALL NOTDONE")
 
 ########SINGLE COPY GENES#################################################
 def single_copy(gene):
-	print ("\nGene family is single copy. No pruning required. All clades will be saved.\nGene will be added to gene_progress_list.txt as SINGLE DONE")
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
 	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
@@ -134,6 +134,10 @@ def single_copy(gene):
 		with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
 			text="{}_{}\n".format(gene,clade)
 			master.write(text)
+	with open("gene_progress_list.txt", "a") as p:
+		p.write("{}\tSINGLE\tDONE\n".format(gene))
+	print ("\nGene family is single copy. No pruning required. All clades are saved.\nGene has been added to gene_progress_list.txt as SINGLE DONE")
+
 
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
@@ -267,7 +271,9 @@ def make_all_lists(gene):
 		with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
 			master.write(gene+"_"+str(n)+"_all\n")
 		n=n+1	
-
+	with open("gene_progress_list.txt", "a") as p:
+		p.write("{}\tNORMAL\tDONE\n".format(gene))
+	print("\nComplete.\nGene has been added to gene_progress_list.txt as NORMAL DONE.")
 
 ######SUBFUNCTIONS###################################################################
 
