@@ -145,20 +145,63 @@ def pre_prune(gene):
 		f=file.read()
 	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
 	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-	view_rooted_tree(full_tree)
-	choice=input("For the first gene, is it a monophyletic clade? (y/n)")
-	if choice[0]=="y":
-		choose_clade(full_tree)
-		prune_list=[i for i in gene_names if i not in group_list]
-		full_t2=full_tree.copy()
-		full_t2.prune(prune_list)
-		view_rooted_tree(full_t2)
-		choice2=input("\nDoes this look correct?\nIf you would like to save this as its own gene, type y.\nOtherwise, type n.")
-		if choice2[0]=="y":
-			
-		
-		
-	print ("")
+	m=100
+	start_gene="{}_{}".format(gene,str(m))
+	os.system("mkdir {}".format(start_gene))
+	full_tree.write(format=1, outfile="{}/{}.dup.fa.tre".format(start_gene,start_gene))
+	m=m+1
+	l=[start_gene]
+	for item in l:
+		full_tree=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
+		view_rooted_tree(full_tree)
+		print("Tree for {}".format(item))
+		c=input("Split off a monophyletic clade? (y/n)")
+		while c=="y":
+			b="{}_{}".format(gene, str(m))
+			l.append(b)
+			tree1=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
+			R=tree1.get_midpoint_outgroup()
+			tree1.set_outgroup(R)
+			group_list=clade_to_tree(tree1)
+			gene_names=tree1.get_leaf_names()
+			if len(group_list)==len(gene_names):
+				#do something - save without cutting.
+			#gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", str(tree1))
+			print(gene_names)
+			print("\ngroup list:")
+			print (group_list)
+			cut_list=[i for i in gene_names if i not in group_list]
+			print("\ncut list: ")
+			print(cut_list)
+			os.system("mkdir {}".format(b))
+			tree2=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
+			R=tree2.get_midpoint_outgroup()
+			tree2.set_outgroup(R)
+			tree2.prune(group_list,preserve_branch_length=True)
+			tree2.write(format=1, outfile="{}/{}.dup.fa.tre".format(b,b))
+			tree1.prune(cut_list,preserve_branch_length=True)
+			tree1.write(format=1, outfile="{}/{}.dup.fa.tre".format(item,item))
+			m=m+1
+			print ("\nTree now looks like this.")
+			view_rooted_tree(tree1)
+			c=input("Split off a monophyletic clade? (y/n)")
+	print (l)
+	
+def clade_to_tree(tree):
+	c="y"
+	while c=="y":
+		leaf1=input("\nEnter the gene on one end of the group.")
+		leaf2=input("\nEnter the gene on the other end of the group.")
+		try:
+			mrca = tree.get_common_ancestor(leaf1,leaf2)
+			group_list=mrca.get_leaf_names()
+			c="n"
+		except ValueError:
+			print("\nGene name not found. Try again.")
+			c="y"
+	return (group_list)
+	
+	
 
 ########GRASSES###########################################################
 def make_grass_groups(gene):
