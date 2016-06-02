@@ -165,20 +165,26 @@ def pre_prune(gene):
 			group_list=clade_to_tree(tree1)
 			gene_names=tree1.get_leaf_names()
 			if len(group_list)==len(gene_names):
-				#do something - save without cutting, but could be root issue.
-			cut_list=[i for i in gene_names if i not in group_list]
-			os.system("mkdir {}".format(b))
-			tree2=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
-			R=tree2.get_midpoint_outgroup()
-			tree2.set_outgroup(R)
-			tree2.prune(group_list,preserve_branch_length=True)
-			tree2.write(format=1, outfile="{}/{}.dup.fa.tre".format(b,b))
-			tree1.prune(cut_list,preserve_branch_length=True)
-			tree1.write(format=1, outfile="{}/{}.dup.fa.tre".format(item,item))
-			m=m+1
-			print ("\nTree now looks like this.")
-			view_rooted_tree(tree1)
-			c=input("Split off a monophyletic clade? (y/n)")
+				c1=input("\nList includes all copies on tree.\nMake gene with all copies? (y/n)")
+				if c1=="y":
+					c="n"
+				else:
+					print("\nGroup crosses root. Unable to make group.\nChoose new group.")
+					c="y"
+			else:
+				cut_list=[i for i in gene_names if i not in group_list]
+				os.system("mkdir {}".format(b))
+				tree2=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
+				R=tree2.get_midpoint_outgroup()
+				tree2.set_outgroup(R)
+				tree2.prune(group_list,preserve_branch_length=True)
+				tree2.write(format=1, outfile="{}/{}.dup.fa.tre".format(b,b))
+				tree1.prune(cut_list,preserve_branch_length=True)
+				tree1.write(format=1, outfile="{}/{}.dup.fa.tre".format(item,item))
+				m=m+1
+				print ("\nTree now looks like this.")
+				view_rooted_tree(tree1)
+				c=input("Split off a monophyletic clade? (y/n)")
 	print (l)
 	
 ########GRASSES###########################################################
