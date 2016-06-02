@@ -201,7 +201,7 @@ def make_grass_groups(gene):
 		print ("\nThere are no grass genes in this gene family. We will continue with the next clade.")
 	else:
 		######Removing stray within-clade gene copies from the clade######
-		cut_stray_genes(gene, species_keep, species_list)
+		cut_list=cut_stray_genes(gene, species_keep, species_list)
 		######Designating whole clade duplications######
 		define_groups(gene, cut_list, species_list)
 		
@@ -219,7 +219,7 @@ def make_brass_groups(gene):
 		print ("\nThere are no brass genes in this gene family. We will continue with the next clade.")
 	else:
 		######Removing stray within-clade gene copies from the clade######
-		cut_stray_genes(gene, species_keep, species_list)
+		cut_list=cut_stray_genes(gene, species_keep, species_list)
 		######Designating whole clade duplications######
 		define_groups(gene, cut_list, species_list)
 
@@ -237,7 +237,7 @@ def make_fab_groups(gene):
 		print ("\nThere are no fab genes in this gene family. We will continue with the next clade.")
 	else:
 		######Removing stray within-clade gene copies from the clade######
-		cut_stray_genes(gene, species_keep, species_list)
+		cut_list=cut_stray_genes(gene, species_keep, species_list)
 		######Designating whole clade duplications######
 		define_groups(gene, cut_list, species_list)
 		
@@ -255,7 +255,7 @@ def make_seedfree_groups(gene):
 		print ("\nThere are no seedfree genes in this gene family. We will continue with the rest of the tree.")
 	else:
 		######Removing stray within-clade gene copies from the clade######
-		cut_stray_genes(gene, species_keep, species_list)
+		cut_list=cut_stray_genes(gene, species_keep, species_list)
 		######Designating whole clade duplications######
 		define_groups(gene, cut_list, species_list)
 
@@ -272,7 +272,7 @@ def make_other_groups(gene):
 		print ("\nThere are no other genes in this gene family.")
 	else:
 		######Removing stray within-clade gene copies from the clade######
-		cut_stray_genes(gene, species_keep, species_list)
+		cut_list=cut_stray_genes(gene, species_keep, species_list)
 		######Making it a group######
 		group_list=cut_list
 		######Checking that there is only one gene per species######
@@ -360,12 +360,12 @@ def define_groups(gene, cut_list, species_list, clade_name):
 		if choice4[0]=="a":
 			group_list=cut_list
 		elif choice4[0]=="c":
-			choose_clade(clade_tree)
+			group_list=choose_clade(clade_tree)
 		else:
 			group_str=input("\nEnter genes for the group, separated by a space: ")
 			group_list=[item for item in group_str.split()]
 		######Checking that there is only one gene per species######
-		check_single_group(group_list)
+		group_list=check_single_group(group_list)
 		######Checking for typos######
 		if set(group_list).issubset(species_keep):
 			######Allow a chance to back out, for example if user forgot to enter spaces######
