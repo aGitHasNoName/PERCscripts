@@ -22,7 +22,7 @@ if (sys.version_info < (3,0)):
 ######Runs all functions################################################
 def main(gene):
 	gene=str(gene)
-	count_summarize(gene)
+	gene_type=count_summarize(gene)
 	if gene_type="small":
 		small_family(gene)
 	elif gene_type="single":
@@ -141,12 +141,10 @@ def single_copy(gene):
 
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
-		f=file.read()
-	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
 	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	gene_names=full_tree.get_leaf_names()
 	m=100
-	start_gene="{}_{}".format(gene,str(m))
+	start_gene="{}_A{}".format(gene,str(m))
 	os.system("mkdir {}".format(start_gene))
 	full_tree.write(format=1, outfile="{}/{}.dup.fa.tre".format(start_gene,start_gene))
 	m=m+1
@@ -157,7 +155,7 @@ def pre_prune(gene):
 		print("Tree for {}".format(item))
 		c=input("Split off a monophyletic clade? (y/n)")
 		while c=="y":
-			b="{}_{}".format(gene, str(m))
+			b="{}_A{}".format(gene, str(m))
 			l.append(b)
 			tree1=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
 			R=tree1.get_midpoint_outgroup()
@@ -185,7 +183,9 @@ def pre_prune(gene):
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
 				c=input("Split off a monophyletic clade? (y/n)")
-	print (l)
+	with open("full_gene_list.txt", "a") as p:
+		for i in l:
+			p.write(i+"\n")
 	
 ########GRASSES###########################################################
 def make_grass_groups(gene):
