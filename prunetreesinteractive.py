@@ -22,6 +22,7 @@ if (sys.version_info < (3,0)):
 ######Runs all functions################################################
 def main(gene):
 	gene=str(gene)
+	erase_previous_files(gene)
 	gene_type=count_summarize(gene)
 	if gene_type="small":
 		small_family(gene)
@@ -138,7 +139,6 @@ def single_copy(gene):
 		p.write("{}\tSINGLE\tDONE\n".format(gene))
 	print ("\nGene family is single copy. No pruning required. All clades are saved.\nGene has been added to gene_progress_list.txt as SINGLE DONE")
 
-
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
 	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
@@ -183,7 +183,7 @@ def pre_prune(gene):
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
 				c=input("Split off a monophyletic clade? (y/n)")
-	with open("full_gene_list.txt", "a") as p:
+	with open("gene_list.txt", "a") as p:
 		for i in l:
 			p.write(i+"\n")
 	
@@ -461,6 +461,10 @@ def clade_to_tree(tree):
 			print("\nGene name not found. Try again.")
 			c="y"
 	return (group_list)
+	
+######Erasing previous files##############################################
+def erase_previous_files(gene):
+	os.system("rm {}/{}_*".format(gene,gene))
 
 ############RUN THE PROGRAM##########################################################
 gene=sys.argv[1]
