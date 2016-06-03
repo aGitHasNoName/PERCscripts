@@ -102,7 +102,6 @@ def single_copy(gene):
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
 	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
-	clade_list=["1_all","1_single"]
 	######Saving grass clade######
 	clade_name="1_grass"
 	species_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
@@ -128,6 +127,7 @@ def single_copy(gene):
 	if len(group_list)>0:
 		saving_group(gene, group_list, clade_name)
 	######Saving whole tree######
+	clade_list=["1_all","1_single"]
 	for clade in clade_list:
 		with open(gene+"/"+gene+"_"+clade+"_prune.txt", "a") as allfile:
 			for gene1 in gene_names:
@@ -315,6 +315,8 @@ def make_all_lists(gene):
 		with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
 			master.write(gene+"_"+str(n)+"_all\n")
 		n=n+1	
+	if n==2:
+		os.system("cp {}/{}_1_all.txt {}/{}_1_single.txt".format)
 	with open("gene_progress_list.txt", "a") as p:
 		p.write("{}\tNORMAL\tDONE\n".format(gene))
 	print("\nComplete.\nGene has been added to gene_progress_list.txt as NORMAL DONE.")
