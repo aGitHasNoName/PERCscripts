@@ -8,8 +8,7 @@ from ete3 import PhyloTree
 #combination of groups.
 #Also produces a master list file containing each file name.
 
-#sys.argv[1] is gene name
-#assumes you have a file called gene_names.txt that you are using in GNU parallel for running through all genes.
+#assumes you have a file called genes_todo.txt that includes all genes.
 ########################################################
 
 ######Checks for Python3################################
@@ -19,8 +18,23 @@ if (sys.version_info < (3,0)):
 
 ######MAIN FUNCTIONS###############################################################
 
+def main():
+	genes_todo=[line.rstrip() for line in open("genes_todo.txt")]
+	for gene in genes_todo:
+		c=input("\nPrune gene {}? (y/n)".format(gene))
+		if c[0]=="y":
+			prune_main(gene)
+			with open("gens_todo.txt", "w") as f:
+				if i in genes_todo != gene:
+					f.write(i+"\n")
+			with open("genes_done.txt", "a") as g:
+				g.write(gene+"\n")
+		else:
+			print("\nExiting. Program will return to this gene next time.")
+			break
+
 ######Runs all functions################################################
-def main(gene):
+def prune_main(gene):
 	gene=str(gene)
 	erase_previous_files(gene)
 	gene_type=count_summarize(gene)
@@ -185,7 +199,7 @@ def pre_prune(gene):
 				view_rooted_tree(tree1)
 				c=input("Split off a monophyletic clade? (y/n)")
 	#with open("gene_list.txt", "a") as p:
-	with open("test_genes.txt", "a") as p:
+	with open("genes_todo.txt", "a") as p:
 		for i in l:
 			p.write(i+"\n")
 	
@@ -471,8 +485,8 @@ def erase_previous_files(gene):
 	os.system("rm {}/{}_*".format(gene,gene))
 
 ############RUN THE PROGRAM##########################################################
-gene=sys.argv[1]
-if __name__ == '__main__': main(gene)
+
+if __name__ == '__main__': main()
 
 
 
