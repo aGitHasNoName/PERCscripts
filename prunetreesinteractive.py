@@ -9,13 +9,13 @@ from ete3 import PhyloTree
 #Also produces a master list file containing each file name.
 
 #sys.argv[1] is gene name
+#assumes you have a file called gene_names.txt that you are using in GNU parallel for running through all genes.
 ########################################################
 
 ######Checks for Python3################################
 if (sys.version_info < (3,0)):
 	print("Python 3 required!\n")
 	sys.exit(1)
-
 
 ######MAIN FUNCTIONS###############################################################
 
@@ -468,7 +468,7 @@ def erase_previous_files(gene):
 
 ############RUN THE PROGRAM##########################################################
 gene=sys.argv[1]
-main(gene)
+if __name__ == '__main__': main()
 
 
 
