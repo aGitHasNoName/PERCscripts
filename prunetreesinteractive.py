@@ -24,11 +24,12 @@ def main(gene):
 	gene=str(gene)
 	erase_previous_files(gene)
 	gene_type=count_summarize(gene)
-	if gene_type="small":
+	choice="n"
+	if gene_type=="small":
 		small_family(gene)
-	elif gene_type="single":
+	elif gene_type=="single":
 		single_copy(gene)
-	elif gene_type="large":
+	elif gene_type=="large":
 		print ("\nGene family is large. Showing the tree.")
 		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 		view_rooted_tree(clade_tree)
@@ -183,7 +184,8 @@ def pre_prune(gene):
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
 				c=input("Split off a monophyletic clade? (y/n)")
-	with open("gene_list.txt", "a") as p:
+	#with open("gene_list.txt", "a") as p:
+	with open("test_genes.txt", "a") as p:
 		for i in l:
 			p.write(i+"\n")
 	
@@ -429,7 +431,7 @@ def view_rooted_tree(clade_tree):
 	
 ######Making a group from one monophyletic clade###########################
 def choose_clade(clade_tree):
-	c="y:
+	c="y"
 	while c=="y":
 		leaf1=input("\nEnter the gene on one end of the group.")
 		leaf2=input("\nEnter the gene on the other end of the group.")
@@ -470,7 +472,7 @@ def erase_previous_files(gene):
 
 ############RUN THE PROGRAM##########################################################
 gene=sys.argv[1]
-if __name__ == '__main__': main()
+if __name__ == '__main__': main(gene)
 
 
 
