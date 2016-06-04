@@ -330,7 +330,7 @@ def make_all_lists(gene):
 			master.write(gene+"_"+str(n)+"_all\n")
 		n=n+1	
 	if n==2:
-		os.system("cp {}/{}_1_all.txt {}/{}_1_single.txt".format)
+		os.system("cp {}/{}_1_all.txt {}/{}_1_single.txt".format(gene,gene,gene,gene))
 	with open("gene_progress_list.txt", "a") as p:
 		p.write("{}\tNORMAL\tDONE\n".format(gene))
 	print("\nComplete.\nGene has been added to gene_progress_list.txt as NORMAL DONE.")
@@ -342,8 +342,11 @@ def cut_stray_genes(gene, species_keep, species_list):
 	######Showing the tree######
 	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
-	view_rooted_tree(clade_tree)
-	print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
+	if len(species_keep)>1:
+		view_rooted_tree(clade_tree)
+		print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
+	else:
+		print("\nSpecies tree only contains 1 species. Tree will not be shown.")
 	cut_list=species_keep
 	view_counts(cut_list, species_list)
 	######Removing stray within-clade gene copies from the clade######
@@ -369,8 +372,11 @@ def cut_stray_other(gene, species_keep, species_list):
 	######Showing the tree######
 	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
-	view_rooted_tree(clade_tree)
-	print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
+	if len(species_keep)>1:
+		view_rooted_tree(clade_tree)
+		print("\nThis is the clade tree. There are "+str(len(species_keep))+" total gene copies.\n")
+	else:
+		print("\nSpecies tree only contains 1 species. Tree will not be shown.")
 	cut_list=species_keep
 	view_counts(cut_list, species_list)
 	######Removing stray within-clade gene copies from the clade######
@@ -467,10 +473,15 @@ def saving_group(gene, group_list, clade_name):
 
 ######Viewing rooted tree in png file#####################################
 def view_rooted_tree(clade_tree):
-	R=clade_tree.get_midpoint_outgroup()
-	clade_tree.set_outgroup(R)
-	clade_tree.render("treeimage.png")
-	os.system("open treeimage.png")
+	try:
+		R=clade_tree.get_midpoint_outgroup()
+		clade_tree.set_outgroup(R)
+		clade_tree.render("treeimage.png")
+		os.system("open treeimage.png")
+	except:
+		print("\nUnable to root tree. Showing unrooted tree.")
+		clade_tree.render("treeimage.png")
+		os.system("open treeimage.png")
 	
 ######Making a group from one monophyletic clade###########################
 def choose_clade(clade_tree):
