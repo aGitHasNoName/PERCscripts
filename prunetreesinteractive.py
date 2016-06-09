@@ -208,9 +208,8 @@ def pre_prune(gene):
 ########GRASSES###########################################################
 def make_grass_groups(gene):
 	######Getting all grass gene copies######
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
-		f=file.read()
-	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)	
+	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	gene_names=full_tree.get_leaf_names()	
 	species_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
 	species_keep=[i for i in gene_names if i[0:3] in species_list or i[0:4] in species_list]
 	######Checking if the list is empty######
@@ -225,9 +224,8 @@ def make_grass_groups(gene):
 ########BRASSES###########################################################
 def make_brass_groups(gene):
 	######Getting all brass gene copies######
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
-		f=file.read()
-	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)	
+	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	gene_names=full_tree.get_leaf_names()	
 	species_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
 	species_keep=[i for i in gene_names if i[0:3] in species_list and i[0:4] != "Bsta"]
 	######Checking if the list is empty######
@@ -242,9 +240,8 @@ def make_brass_groups(gene):
 ##########FABS############################################################
 def make_fab_groups(gene):
 	######Getting all fab gene copies######
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
-		f=file.read()
-	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
+	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	gene_names=full_tree.get_leaf_names()	
 	species_list=["Mtr","Pvu","Gma","Csa","Ppe","Mdo","Fve"]
 	species_keep=[i for i in gene_names if i[0:3] in species_list]
 	######Checking if the list is empty######
@@ -259,9 +256,8 @@ def make_fab_groups(gene):
 ##########SEEDFREE#########################################################
 def make_seedfree_groups(gene):
 	######Getting all seedfree gene copies######
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
-		f=file.read()
-	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
+	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	gene_names=full_tree.get_leaf_names()	
 	species_list=["Smo","Ppa","Sfa","Cre","Vca","Csu","CCM","RCC","Olu"]
 	species_keep=[i for i in gene_names if i[0:3] in species_list]
 	######Checking if the list is empty######
@@ -276,9 +272,8 @@ def make_seedfree_groups(gene):
 ########OTHERS##############################################################
 def make_other_groups(gene):
 	######Getting all other gene copies######
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
-		f=file.read()
-	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
+	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	gene_names=full_tree.get_leaf_names()	
 	species_list=['Cpa', 'Gra', 'Tca', 'Csi', 'Ccl', 'Mes', 'Rco', 'Lus', 'Ptr', 'Spu', 'Egr', 'Vvi', 'Kma', 'Stu', 'Sly', 'Mgu', 'Aco', 'Mac', 'Spo', 'Atr']
 	species_keep=[i for i in gene_names if i[0:3] in species_list]
 	######Checking if the list is empty######
