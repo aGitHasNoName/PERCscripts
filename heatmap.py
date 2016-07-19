@@ -57,19 +57,19 @@ def calcPearson(study_dict):
 	
 #works
 def makeHeatMap(pearson,x,y):
-	#Set colorscale:
-	colorscale=[[0, 'rgb(0,10,20)'], [1, 'rgb(0,100,200)']]
 	#Get matrix from pandas style:
 	z=pearson.values.tolist()
 	#Create heatmap:
-	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale="colorscale")
-	#View figure:
-	py.iplot(fig, filename='annotated_heatmap3')
+	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale=([0, 'rgb(249,236,235)'], [1, 'rgb(236,58,38)']), font_colors=(['rgb(0,0,0)', 'rgb(255,255,255)']))
+	return(fig)
+
 	
 
 study_dict=makeStudyDict(gene_list, cladeNum)
 pearson,x,y=calcPearson(study_dict)
-makeHeatMap(pearson,x,y)
+fig=makeHeatMap(pearson,x,y)
+
+py.iplot(fig, filename='annotated_heatmap3')
 
 
 
