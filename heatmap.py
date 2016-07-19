@@ -68,7 +68,7 @@ def makeHeatMap(pearson,x,y):
 study_dict=makeStudyDict(gene_list, cladeNum)
 pearson,x,y=calcPearson(study_dict)
 fig=makeHeatMap(pearson,x,y)
-
+fig['layout'].update(margin=go.Margin(l=200,t=150))
 py.iplot(fig, filename='annotated_heatmap3')
 
 
