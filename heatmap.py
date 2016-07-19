@@ -55,8 +55,16 @@ def calcPearson(study_dict):
 	
 
 def makeHeatMap(pearson,x,y):
-	data = [go.Heatmap( z=pearson.values.tolist(), colorscale='Viridis')]
-	py.iplot(data, filename='pandas-heatmap')
+	#Set colorscale:
+	colorscale=[[0, 'rgb(166,206,227)'], [0.25, 'rgb(31,120,180)'], [0.45, 'rgb(178,223,138)'], [0.65, 'rgb(51,160,44)'], [0.85, 'rgb(251,154,153)'], [1, 'rgb(227,26,28)']]
+	#Get matrix from pandas style:
+	z=pearson.values.tolist()
+	#Reverse matrix:
+	z = z[::-1]
+	#Create heatmap:
+	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale="colorscale")
+	#View figure:
+	py.iplot(fig, filename='annotated_heatmap')
 	
 	
 
