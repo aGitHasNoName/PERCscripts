@@ -20,7 +20,7 @@ heatmap in plotly
 
 
 def chooseGenes():
-	with open("/Users/colbyjones/PhD/PERCscripts/fam_dict.txt","r") as t:
+	with open("~/Users/colbyjones/PhD/PERCscripts/fam_dict.txt","r") as t:
 		fam_dict=json.load(t)
 		
 		
@@ -31,19 +31,16 @@ def chooseGenes():
 
 ##works
 def makeStudyDict(gene_list, cladeNum):
-	with open("/Users/colbyjones/PhD/PERCscripts/gene_dict.txt ","r") as t:
+	with open("/Users/colbyjones/PhD/PERCscripts/gene_dict.txt","r") as t:
 		gene_dict=json.load(t)
 	study_dict={}
-	x=[]
 	for gene in gene_list:
 		v=gene_dict[gene]
 		clade=v[cladeNum]
 		for i in clade:
 			i_list=[t.strip() for t in i.split()]
 			study_dict[i_list[0]]=i_list[1:]
-			x.append(i_list[0])
-	y=x	
-	return(study_dict,x,y)
+	return(study_dict)
 
 
 
@@ -52,25 +49,26 @@ def calcPearson(study_dict):
 	df=pd.DataFrame.from_dict(study_dict,"columns",float)
 	pearson=df.corr()
 	pearson=pearson.round(3)
-	return(pearson)
+	#Reverse matrix:
+	pearson=pearson[::-1]
+	x=pearson.columns.values.tolist()
+	y=pearson.index.values.tolist()
+	return(pearson,x,y)
 	
 #works
 def makeHeatMap(pearson,x,y):
 	#Set colorscale:
-	colorscale=[[0, 'rgb(166,206,227)'], [0.25, 'rgb(31,120,180)'], [0.45, 'rgb(178,223,138)'], [0.65, 'rgb(51,160,44)'], [0.85, 'rgb(251,154,153)'], [1, 'rgb(227,26,28)']]
+	colorscale=[[0, 'rgb(0,10,20)'], [1, 'rgb(0,100,200)']]
 	#Get matrix from pandas style:
 	z=pearson.values.tolist()
-	#Reverse matrix:
-	z = z[::-1]
-	x = x[::-1]
 	#Create heatmap:
 	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale="colorscale")
 	#View figure:
-	py.iplot(fig, filename='annotated_heatmap2')
+	py.iplot(fig, filename='annotated_heatmap3')
 	
 
-study_dict,x,y=makeStudyDict(gene_list, cladeNum)
-pearson=calcPearson(study_dict)
+study_dict=makeStudyDict(gene_list, cladeNum)
+pearson,x,y=calcPearson(study_dict)
 makeHeatMap(pearson,x,y)
 
 
