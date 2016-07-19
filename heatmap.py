@@ -9,20 +9,38 @@ import pandas as pd
 
 
 Identify genes/branch lengths of interest
-calculate pearson
+DONEcalculate pearson
 calculate pvalue
-heatmap in plotly
+DONEheatmap in plotly
 
 ############################################
-##calculates Pearson coefficient on a matrix of branch lengths across multiple genes
-##argv[1]is .txt file with list of gene names
+##Lets you choose genes to compare ERC for, calculates Pearson’s r, displays heatmap
+##argv[1]is 
 ############################################
 
 
 def chooseGenes():
 	with open("~/Users/colbyjones/PhD/PERCscripts/fam_dict.txt","r") as t:
 		fam_dict=json.load(t)
+		input_start=input("\nSearch for genes?\nPress y to begin.")
+		while input_start=="y":
+			input_search=input("\nSearch for genes by which category?\nEnter the correct number.\n\n0 Arabidopsis locus\n1 Gene name\n2 Number of genes in family\n3 Source (where gene was listed as meiosis)\n4 Type (single or large)\n5 Number of pruned genes within family\n6 GO terms\n7 Process\n8 Linked genes\n9 Produce 2N gametes?\n10 Involved in apomixis?\n11 I know the family ID numbers I would like to use.\n12 Single copy genes\n13 All genes\n")
+			if input_search==0:
+			if input_search==1:
+			if input_search==2:
+			if input_search==3:
+			if input_search==4:
+			if input_search==5:
+			if input_search==6:
+			if input_search==7:
+			if input_search==8:
+			if input_search==9:
+			if input_search==10:
+			if input_search==11:
+			if input_search==12:
+			if input_search==13:
 		
+		cladeNum=input("\nWhich clade would you like to compare?\nEnter the correct number:\n1 Single copy genes for all species\n2 All species\n3 Grass clade\n4Brassicaceae clade\n5Fabidae clade\n6 Seedfree clade (non-monophyletic)\n")
 		
 	return(gene_list, cladeNum)
 
@@ -64,12 +82,12 @@ def makeHeatMap(pearson,x,y):
 	return(fig)
 
 	
-
-study_dict=makeStudyDict(gene_list, cladeNum)
-pearson,x,y=calcPearson(study_dict)
-fig=makeHeatMap(pearson,x,y)
-fig['layout'].update(margin=go.Margin(l=200,t=150))
-py.iplot(fig, filename='annotated_heatmap3')
+main()
+	study_dict=makeStudyDict(gene_list, cladeNum)
+	pearson,x,y=calcPearson(study_dict)
+	fig=makeHeatMap(pearson,x,y)
+	fig['layout'].update(margin=go.Margin(l=200,t=150))
+	py.iplot(fig, filename='annotated_heatmap3')
 
 
 
@@ -104,12 +122,4 @@ def calculatePearson():
 calculatePearson()
 
 
-
-with open("working_dict.txt","r") as t:
-	working_dict=json.load(t)
-with open("fam_dict.txt","r") as g:
-	fam_dict=json.load(g)
-
-with open("fam_dict.txt", "w") as outfile:
-	json.dump(fam_dict,outfile)
 
