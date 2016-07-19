@@ -1,7 +1,7 @@
 
 import sys
 import plotly.plotly as py
-#from plotly.tools import FigureFactory as FF
+from plotly.tools import FigureFactory as FF
 import plotly.graph_objs as go
 import os
 import json
@@ -51,6 +51,7 @@ def makeStudyDict(gene_list, cladeNum):
 def calcPearson(study_dict):
 	df=pd.DataFrame.from_dict(study_dict,"columns",float)
 	pearson=df.corr()
+	pearson=pearson.round(3)
 	return(pearson)
 	
 
@@ -61,6 +62,7 @@ def makeHeatMap(pearson,x,y):
 	z=pearson.values.tolist()
 	#Reverse matrix:
 	z = z[::-1]
+	x = x[::-1]
 	#Create heatmap:
 	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale="colorscale")
 	#View figure:
