@@ -20,7 +20,7 @@ heatmap in plotly
 
 
 def chooseGenes():
-	with open("fam_dict.txt","r") as t:
+	with open("/Users/colbyjones/PhD/PERCscripts/fam_dict.txt","r") as t:
 		fam_dict=json.load(t)
 		
 		
@@ -31,7 +31,7 @@ def chooseGenes():
 
 ##works
 def makeStudyDict(gene_list, cladeNum):
-	with open("gene_dict.txt","r") as t:
+	with open("/Users/colbyjones/PhD/PERCscripts/gene_dict.txt ","r") as t:
 		gene_dict=json.load(t)
 	study_dict={}
 	x=[]
@@ -54,7 +54,7 @@ def calcPearson(study_dict):
 	pearson=pearson.round(3)
 	return(pearson)
 	
-
+#works
 def makeHeatMap(pearson,x,y):
 	#Set colorscale:
 	colorscale=[[0, 'rgb(166,206,227)'], [0.25, 'rgb(31,120,180)'], [0.45, 'rgb(178,223,138)'], [0.65, 'rgb(51,160,44)'], [0.85, 'rgb(251,154,153)'], [1, 'rgb(227,26,28)']]
@@ -66,8 +66,16 @@ def makeHeatMap(pearson,x,y):
 	#Create heatmap:
 	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale="colorscale")
 	#View figure:
-	py.iplot(fig, filename='annotated_heatmap')
+	py.iplot(fig, filename='annotated_heatmap2')
 	
+
+study_dict,x,y=makeStudyDict(gene_list, cladeNum)
+pearson=calcPearson(study_dict)
+makeHeatMap(pearson,x,y)
+
+
+
+
 	
 
 def calculatePearson():
