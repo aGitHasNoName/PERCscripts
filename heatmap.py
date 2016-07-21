@@ -1,25 +1,26 @@
-import plotly.plotly as py
-from plotly.tools import FigureFactory as FF
-import plotly.graph_objs as go
+#import plotly.plotly as py
+#from plotly.tools import FigureFactory as FF
+#import plotly.graph_objs as go
 import os
 import json
 import pandas as pd
+import numpy as np
+from scipy.stats.stats import pearsonr 
 
 
-fix dictionary - fabs getting added to seedfree?
-calculate pvalues
-MSH->MLH linear like yeast (and maybe other well known meiosis genes?)
-quantify differences between All and clades for single copy
-scikit-bio package sklearn bicluster in python???
-functional sorting from Tair and look for patterns
-TALK
-branch length outliers
-dup A vs. dup B in a clade that is otherwise single
+#fix dictionary - fabs getting added to seedfree?
+#MSH->MLH linear like yeast (and maybe other well known meiosis genes?)
+#quantify differences between All and clades for single copy
+#scikit-bio package sklearn bicluster in python???
+#functional sorting from Tair and look for patterns
+#TALK
+#branch length outliers
+#dup A vs. dup B in a clade that is otherwise single
 
 
 ############################################
 ## Calculate ERC: calculates Pearson’s r, calculates p value, makes heatmap, displays on plotly website if using command line OR in notebook if using jupyter notebook.
-##takes gene list and Clade Number:
+##Takes output file name, gene list, and clade number (choose from below):
 ##1 Single copy genes for all species
 ##2 All species (For single copy genes, this is same as single)
 ##3 Grass clade
@@ -91,24 +92,26 @@ def statsMatrix(study_dict):
 	a[il]=pvalues2
 	return(a,x)
 
-#df=df[cols]
-
-
-def calcPvalue():
-	
-
 	
 #works
-def makeHeatMap(pearson,x,y):
-	#Get matrix from pandas style:
-	z=pearson.values.tolist()
-	#Create heatmap:
-	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale=([0, 'rgb(249,236,235)'], [1, 'rgb(236,58,38)']), font_colors=(['rgb(0,0,0)', 'rgb(255,255,255)']))
-	return(fig)
+def saveDataFrame(a,x,name):
+	df=pd.DataFrame(data=a,index=x,columns=x)
+	df=df[::-1]
+	with open("/Users/colbyjones/Desktop/MeiosisGenesTAIR/{}.csv".format(name))
 
-def main(gene_list,cladeNum):
+
+def main(name,gene_list,cladeNum):
 	study_dict=makeStudyDict(gene_list, cladeNum)
 	a,x=statsMatrix(study_dict)
+	saveDataFrame(a,x,name)
+	
+	
+	#Get matrix from pandas style:
+	z=df.values.tolist()
+	#Create heatmap:
+	fig = FF.create_annotated_heatmap(z, x=x, y=y, colorscale=([0, 'rgb(249,236,235)'], [1, 'rgb(236,58,38)']), font_colors=(['rgb(0,0,0)', 'rgb(255,255,255)']))
+	return(fig)	
+	
 	fig=makeHeatMap(pearson,x,y)
 	fig['layout'].update(margin=go.Margin(l=200,t=150))
 	py.iplot(fig, filename='annotated_heatmap5')
