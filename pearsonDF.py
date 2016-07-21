@@ -79,9 +79,9 @@ def statsMatrix(study_dict):
 	pvalues2=[]
 	for i in pvalues:
 		if i<0.00005:
-			pvalues2.append("<0.00001")
+			pvalues2.append("SIG <0.00001")
 		elif i<0.0005:
-			pvalues2.append("<0.0001")
+			pvalues2.append("SIG <0.0001")
 		elif i<0.005:
 			pvalues2.append("<0.001")
 		elif i<0.05:
@@ -98,8 +98,7 @@ def saveDataFrame(a,x,outname,sort_list_file):
 		sort_list=[line.strip("\n") for line in open(sort_list_file)]
 		cols=sort_list
 		df=df[cols]
-	np.savetxt("/Users/colbyjones/Desktop/MeiosisGenesTAIR/{}.csv".format(outname), a, delimiter=",")
-	#df.to_csv("/Users/colbyjones/Desktop/MeiosisGenesTAIR/{}.csv".format(outname))
+	df.to_csv("/Users/colbyjones/Desktop/MeiosisGenesTAIR/{}.csv".format(outname))
 
 
 def main(outname,gene_list_file,cladeNum,sort_list_file):
