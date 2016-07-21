@@ -6,8 +6,15 @@ import json
 import pandas as pd
 
 
-
-calculate pvalue
+fix dictionary - fabs getting added to seedfree?
+calculate pvalues
+MSH->MLH linear like yeast (and maybe other well known meiosis genes?)
+quantify differences between All and clades for single copy
+scikit-bio package sklearn bicluster in python???
+functional sorting from Tair and look for patterns
+TALK
+branch length outliers
+dup A vs. dup B in a clade that is otherwise single
 
 
 ############################################
@@ -37,15 +44,55 @@ def makeStudyDict(gene_list, cladeNum):
 
 
 #works
-def calcPearson(study_dict):
-	df=pd.DataFrame.from_dict(study_dict,"columns",float)
-	pearson=df.corr()
-	pearson=pearson.round(3)
-	#Reverse matrix:
-	pearson=pearson[::-1]
-	x=pearson.columns.values.tolist()
-	y=pearson.index.values.tolist()
-	return(pearson,x,y)
+def statsMatrix(study_dict):
+	x=[]
+	results=[]
+	pvalues=[]
+	done=[]
+	study_dict2=study_dict
+	for key in study_dict:
+		x.append(key)
+		for i in study_dict2:
+			check=set()
+			check.add(key)
+			check.add(i)
+			if check not in done:
+				v=study_dict[key]
+				v=np.array(v).astype(np.float)
+				v2=study_dict2[i]
+				v2=np.array(v2).astype(np.float)
+				try:
+					tup=pearsonr(v,v2)
+					results.append(tup[0])
+					if tup[1]>0:
+						pvalues.append(tup[1])
+					done.append(check)
+				except ValueError:
+					print(len(v))
+					print(len(v2))
+	l=len(x)
+	a=np.arange(l*l).reshape(l,l).astype(np.object)
+	iu=np.triu_indices(l)
+	il=np.tril_indices(l,-1)
+	results2=[float(round(i,3)) for i in results]
+	pvalues2=[]
+	for i in pvalues:
+		if i<0.00005:
+			pvalues2.append("<0.00005")
+		elif i<0.0005:
+			pvalues2.append("<0.0005")
+		elif i<0.005:
+			pvalues2.append("<0.005")
+		elif i<0.05:
+			pvalues2.append("<0.05")
+		else:
+			pvalues2.append(">0.05")
+	a[iu]=results2
+	a[il]=pvalues2
+	return(a,x)
+
+#df=df[cols]
+
 
 def calcPvalue():
 	
@@ -61,7 +108,7 @@ def makeHeatMap(pearson,x,y):
 
 def main(gene_list,cladeNum):
 	study_dict=makeStudyDict(gene_list, cladeNum)
-	pearson,x,y=calcPearson(study_dict)
+	a,x=statsMatrix(study_dict)
 	fig=makeHeatMap(pearson,x,y)
 	fig['layout'].update(margin=go.Margin(l=200,t=150))
 	py.iplot(fig, filename='annotated_heatmap5')
