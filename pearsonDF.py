@@ -92,21 +92,17 @@ def statsMatrix(study_dict):
 	a[il]=pvalues2
 	return(a,x)
 
-def saveDataFrame(a,x,outname,sort_list_file):
+def saveDataFrame(a,x,outname):
 	df=pd.DataFrame(data=a,index=x,columns=x)
-	if sort_list_file!="none":
-		sort_list=[line.strip("\n") for line in open(sort_list_file)]
-		cols=sort_list
-		df=df[cols]
 	df.to_csv("/Users/colbyjones/Desktop/MeiosisGenesTAIR/{}.csv".format(outname))
 
 
 def main(outname,gene_list_file,cladeNum,sort_list_file):
 	study_dict=makeStudyDict(gene_list_file, cladeNum)
 	a,x=statsMatrix(study_dict)
-	saveDataFrame(a,x,outname,sort_list_file)
+	saveDataFrame(a,x,outname)
 	
-main(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
+main(sys.argv[1],sys.argv[2],sys.argv[3])
 	
 
 ##python /Users/colbyjones/PhD/PERCscripts/pearsonDF.py SingleAll /Users/colbyjones/Desktop/MeiosisGenesTAIR/SortedSingleSingleGenes.txt 1 none
