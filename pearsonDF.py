@@ -78,13 +78,13 @@ def statsMatrix(study_dict):
 	results2=[float(round(i,3)) for i in results]
 	pvalues2=[]
 	for i in pvalues:
-		if i<0.00005:
-			pvalues2.append("SIG <0.00001")
-		elif i<0.0005:
-			pvalues2.append("SIG <0.0001")
-		elif i<0.005:
+		if i<0.00001:
+			pvalues2.append("<0.00001")
+		elif i<0.0001:
+			pvalues2.append("<0.0001")
+		elif i<0.001:
 			pvalues2.append("<0.001")
-		elif i<0.05:
+		elif i<0.01:
 			pvalues2.append("<0.01")
 		else:
 			pvalues2.append("OVER 0.01")
@@ -97,7 +97,7 @@ def saveDataFrame(a,x,outname):
 	df.to_csv("/Users/colbyjones/Desktop/MeiosisGenesTAIR/{}.csv".format(outname))
 
 
-def main(outname,gene_list_file,cladeNum,sort_list_file):
+def main(outname,gene_list_file,cladeNum):
 	study_dict=makeStudyDict(gene_list_file, cladeNum)
 	a,x=statsMatrix(study_dict)
 	saveDataFrame(a,x,outname)
@@ -105,7 +105,7 @@ def main(outname,gene_list_file,cladeNum,sort_list_file):
 main(sys.argv[1],sys.argv[2],sys.argv[3])
 	
 
-##python /Users/colbyjones/PhD/PERCscripts/pearsonDF.py SingleAll /Users/colbyjones/Desktop/MeiosisGenesTAIR/SortedSingleSingleGenes.txt 1 none
+##python /Users/colbyjones/PhD/PERCscripts/pearsonDF.py SingleAll 1 none
 
 
 
