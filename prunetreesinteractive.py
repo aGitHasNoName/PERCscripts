@@ -9,6 +9,7 @@ from ete3 import PhyloTree
 #Also produces a master list file containing each file name.
 
 #sys.argv[1] is a file that includes all genes.
+#sys.argv[2] is a file that includes all species
 ########################################################
 
 ######Checks for Python3################################
@@ -67,7 +68,7 @@ def prune_main(gene):
 
 ######GENE SUMMARY#######################################################
 def count_summarize(gene):
-	species_list=[line.rstrip() for line in open("species_list_all.txt")]
+	species_list=[line.rstrip() for line in open(sys.argv[2])]
 	grass_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
 	brass_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
 	fab_list=["Mtr","Pvu","Gma","Csa","Ppe","Mdo","Fve"]
