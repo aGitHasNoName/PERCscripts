@@ -8,7 +8,7 @@ from ete3 import PhyloTree
 #combination of groups.
 #Also produces a master list file containing each file name.
 
-#assumes you have a file called genes_todo.txt that includes all genes.
+#sys.argv[1] is a file that includes all genes.
 ########################################################
 
 ######Checks for Python3################################
@@ -19,13 +19,13 @@ if (sys.version_info < (3,0)):
 ######MAIN FUNCTIONS###############################################################
 
 def main():
-	genes_todo=[line.rstrip() for line in open("genes_todo.txt")]
+	genes_todo=[line.rstrip() for line in open(sys.argv[1])]
 	for gene in genes_todo:
 		c=input("\nPrune gene {}? (y/n)".format(gene))
 		if c[0]=="y":
 			prune_main(gene)
-			gtd_copy=[line.rstrip() for line in open("genes_todo.txt")]
-			with open("genes_todo.txt", "w") as f:
+			gtd_copy=[line.rstrip() for line in open(sys.argv[1])]
+			with open(sys.argv[1], "w") as f:
 				for i in gtd_copy:
 					if i != gene:
 						f.write(i+"\n")
