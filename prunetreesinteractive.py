@@ -9,7 +9,8 @@ from ete3 import PhyloTree
 #Also produces a master list file containing each file name.
 
 #sys.argv[1] is a file that includes all genes.
-#sys.argv[2] is a file that includes all species
+#sys.argv[2] is a .txt file that includes all species in column 0 and clade name (if any)
+#in column 1, separated by a tab.
 ########################################################
 
 ######Checks for Python3################################
@@ -36,6 +37,8 @@ def main():
 		else:
 			print("\nExiting. Program will return to this gene next time.")
 			break
+
+
 
 ######Runs all functions################################################
 def prune_main(gene):
