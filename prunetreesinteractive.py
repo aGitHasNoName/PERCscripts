@@ -22,6 +22,7 @@ if (sys.version_info < (3,0)):
 
 def main():
 	genes_todo=[line.rstrip() for line in open(sys.argv[1])]
+	speciesList,cladeDict=makeSpeciesList()
 	for gene in genes_todo:
 		c=input("\nPrune gene {}? (y/n)".format(gene))
 		if c[0]=="y":
@@ -51,7 +52,6 @@ def makeSpeciesList():
 				cladeDict[clade]=[]
 			cladeDict[clade].append(species)
 	return(speciesList,cladeDict)
-		
 
 ######Runs all functions################################################
 def prune_main(gene):
@@ -83,7 +83,7 @@ def prune_main(gene):
 		make_all_lists(gene)
 
 ######GENE SUMMARY#######################################################
-def count_summarize(gene):
+def count_summarize(gene,speciesList):
 	species_list=[line.rstrip() for line in open(sys.argv[2])]
 	grass_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
 	brass_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
