@@ -38,7 +38,20 @@ def main():
 			print("\nExiting. Program will return to this gene next time.")
 			break
 
-
+def makeSpeciesLists():
+	speciesList=[]
+	cladeDict={}
+	with open(sys.argv[2],"r") as f:
+		for line in f.readlines():
+			species=line.split("\t")[0].strip("\n")
+			clade=line.split("\t")[1].strip("\n")
+			speciesList.append(species)
+			if clade not in cladeDict.keys():
+				cladeDict[clade]=[]
+			cladeDict[clade].append(species)
+			
+		speciesList=[line.split("\t")[0] for line in f.readlines()]
+		
 
 ######Runs all functions################################################
 def prune_main(gene):
