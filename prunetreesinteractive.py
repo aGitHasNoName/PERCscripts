@@ -38,6 +38,7 @@ def main():
 			print("\nExiting. Program will return to this gene next time.")
 			break
 
+######Makes species list and dictionary of clades and the species in each clade######
 def makeSpeciesLists():
 	speciesList=[]
 	cladeDict={}
@@ -49,8 +50,7 @@ def makeSpeciesLists():
 			if clade not in cladeDict.keys():
 				cladeDict[clade]=[]
 			cladeDict[clade].append(species)
-			
-		speciesList=[line.split("\t")[0] for line in f.readlines()]
+	return(speciesList,cladeDict)
 		
 
 ######Runs all functions################################################
