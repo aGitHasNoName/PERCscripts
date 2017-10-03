@@ -39,7 +39,7 @@ def main():
 			break
 
 ######Makes species list and dictionary of clades and the species in each clade######
-def makeSpeciesLists():
+def makeSpeciesList():
 	speciesList=[]
 	cladeDict={}
 	with open(sys.argv[2],"r") as f:
