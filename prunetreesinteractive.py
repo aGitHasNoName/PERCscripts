@@ -9,8 +9,8 @@ from ete3 import PhyloTree
 #Also produces a master list file containing each file name.
 
 #sys.argv[1] is a file that includes all genes.
-#sys.argv[2] is a .txt file that includes all species in column 0 and clade name (if any)
-#in column 1, separated by a tab.
+#sys.argv[2] is a .txt file that includes all species in column 0 and clade name
+#in column 1, separated by a tab. If species is not in a clade, write noclade in column 1.
 ########################################################
 
 ######Checks for Python3################################
@@ -83,13 +83,7 @@ def prune_main(gene):
 		make_all_lists(gene)
 
 ######GENE SUMMARY#######################################################
-def count_summarize(gene,speciesList):
-	species_list=[line.rstrip() for line in open(sys.argv[2])]
-	grass_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
-	brass_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
-	fab_list=["Mtr","Pvu","Gma","Csa","Ppe","Mdo","Fve"]
-	seedfree_list=["Smo","Ppa","Sfa","Cre","Vca","Csu","CCM","RCC","Olu"]
-	groups_list=seedfree_list+fab_list+brass_list+grass_list
+def count_summarize(gene,species_list,cladeDict):
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
 	f=re.sub("\d|,|:|\(|\)|\.|;", " ", f)
@@ -101,20 +95,11 @@ def count_summarize(gene,speciesList):
 	clist=[value for value in count_dict.values()]
 	n_copies=sum(clist)
 	
-	grass_count={key:value for key,value in count_dict.items() if key in grass_list}
-	brass_count={key:value for key,value in count_dict.items() if key in brass_list}
-	fab_count={key:value for key,value in count_dict.items() if key in fab_list}
-	seedfree_count={key:value for key,value in count_dict.items() if key in seedfree_list}
-	other_count={key:value for key,value in count_dict.items() if key not in groups_list}
-	
-	words="\nFor gene "+gene+", the number of copies per species:"
-	wordsg="\n\nFor grasses:\n"
-	wordsb="\n\nFor brassicaceae:\n"
-	wordsf="\n\nFor fabidiae:\n"
-	wordssf="\n\nFor seedfree:\n"
-	wordso="\n\nFor all other species:\n"
-	print (words, wordsg, grass_count, wordsb, brass_count, wordsf, fab_count, wordssf, seedfree_count, wordso, other_count)
-	
+	for value in cladeDict.values():
+		clade_count={k,v in count_dict.items() if k in value}
+		print("For gene {}, the number of copies per species:".format(gene))
+		print(clade_count)
+
 	if n_species < 36:
 		gene_type="small"
 	elif n_species == n_copies:
