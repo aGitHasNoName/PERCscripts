@@ -26,7 +26,7 @@ def main():
 	for gene in genes_todo:
 		c=input("\nPrune gene {}? (y/n)".format(gene))
 		if c[0]=="y":
-			prune_main(gene)
+			prune_main(gene,speciesList,cladeDict)
 			gtd_copy=[line.rstrip() for line in open(sys.argv[1])]
 			with open(sys.argv[1], "w") as f:
 				for i in gtd_copy:
@@ -54,7 +54,7 @@ def makeSpeciesList():
 	return(speciesList,cladeDict)
 
 ######Runs all functions################################################
-def prune_main(gene):
+def prune_main(gene,speciesList,cladeDict):
 	gene=str(gene)
 	erase_previous_files(gene)
 	gene_type=count_summarize(gene,speciesList,cladeDict)
