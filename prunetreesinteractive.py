@@ -108,10 +108,8 @@ def count_summarize(gene,species_list,cladeDict):
 		gene_type="small"
 	elif n_species == n_copies:
 		gene_type="single"
-	elif n_copies > 80:
-		gene_type="large"
 	else:
-		gene_type="normal"
+		gene_type="large"
 
 	return (gene_type)
 
