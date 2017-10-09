@@ -63,8 +63,8 @@ def prune_main(gene,speciesList,cladeDict):
 		small_family(gene)
 	elif gene_type=="single":
 		single_copy(gene)
-	elif gene_type=="large":
-		print ("\nGene family is large. Showing the tree.")
+	else:
+		print ("\nShowing the gene tree.")
 		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
 		view_rooted_tree(clade_tree)
 		choice2=input("\nWould you like to split this gene family into multiple families? (y/n)")
@@ -72,8 +72,6 @@ def prune_main(gene,speciesList,cladeDict):
 			pre_prune(gene)
 		else:
 			choice=input("\nContinue with pruning as single gene family? (y/n)")
-	else:
-		choice=input("\nContinue with pruning? (y/n)")
 	if choice[0]=="y":
 		make_grass_groups(gene)
 		make_brass_groups(gene)
