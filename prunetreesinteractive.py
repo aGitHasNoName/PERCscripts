@@ -57,7 +57,8 @@ def makeSpeciesList():
 def prune_main(gene,speciesList,cladeDict):
 	gene=str(gene)
 	erase_previous_files(gene)
-	gene_type=count_summarize(gene,speciesList,cladeDict)
+	group_list=copies_in_group(gene)
+	gene_type=count_summarize(gene,group_list,speciesList,cladeDict)
 	choice="n"
 	if gene_type=="small":
 		small_family(gene)
