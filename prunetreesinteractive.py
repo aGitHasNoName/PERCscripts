@@ -57,8 +57,8 @@ def makeSpeciesList():
 def prune_main(gene,speciesList,cladeDict):
 	gene=str(gene)
 	erase_previous_files(gene)
-	group_list=copies_in_group(gene)
-	gene_type=count_summarize(gene,group_list,speciesList,cladeDict)
+	copy_list=copies_in_group(gene)
+	gene_type=count_summarize(gene,copy_list,speciesList,cladeDict)
 	choice="n"
 	if gene_type=="small":
 		small_family(gene)
@@ -87,17 +87,13 @@ def copies_in_group(gene):
 		f=f.read()
 		list1=[i for i in f.split(",")]
 		list2=[i.split(":")[0] for i in list1]
-		group_list=[i.strip("()") for i in list2]
-		return(group_list)
+		copy_list=[i.strip("()") for i in list2]
+		return(copy_list)
 
 ######GENE SUMMARY#######################################################
-def count_summarize(gene,species_list,cladeDict):
-	with open(gene+"/"+gene+".fa.tre") as file:
-		f=file.read()
-	f=re.sub("\d|,|:|\(|\)|\.|;", " ", f)
-	l=[i for i in f.split()]
+def count_summarize(gene,copy_list,species_list,cladeDict):
+	l=[re.sub("\d", "", i) for i in copy_list]
 	count_dict={species:(l.count(species)) for species in species_list}	
-	
 	slist=[key for key in count_dict if count_dict[key] > 0]
 	n_species=len(slist)
 	clist=[value for value in count_dict.values()]
