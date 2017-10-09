@@ -84,7 +84,7 @@ def prune_main(gene,speciesList,cladeDict):
 
 ######GENE SUMMARY#######################################################
 def count_summarize(gene,species_list,cladeDict):
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
+	with open(gene+"/"+gene+".fa.tre") as file:
 		f=file.read()
 	f=re.sub("\d|,|:|\(|\)|\.|;", " ", f)
 	l=[i for i in f.split()]
@@ -94,13 +94,17 @@ def count_summarize(gene,species_list,cladeDict):
 	n_species=len(slist)
 	clist=[value for value in count_dict.values()]
 	n_copies=sum(clist)
+	species_total=len(species_list)
+	print("For gene {}:".format(gene))
+	print("number of unique gene copies in the orthogroup: {}".format(n_copies))
+	print("number of species represented (out of {} possible): {}".format(species_total,n_species))
 	
-	for value in cladeDict.values():
+	for key,value in cladeDict.items():
 		clade_count={k,v in count_dict.items() if k in value}
-		print("For gene {}, the number of copies per species:".format(gene))
+		print("\nthe number of copies per species in clade {}:".format(key))
 		print(clade_count)
 
-	if n_species < 36:
+	if n_species < (.6*species_total):
 		gene_type="small"
 	elif n_species == n_copies:
 		gene_type="single"
