@@ -80,6 +80,15 @@ def prune_main(gene,speciesList,cladeDict):
 		make_other_groups(gene)
 		make_all_lists(gene)
 
+######MAKE LIST OF COPIES IN ORTHOGROUP########################################
+def copies_in_group(gene):
+	with open("{}/{}.fa.tre".format(gene,gene),"r") as f:
+		f=f.read()
+		list1=[i for i in f.split(",")]
+		list2=[i.split(":")[0] for i in list1]
+		group_list=[i.strip("()") for i in list2]
+		return(group_list)
+
 ######GENE SUMMARY#######################################################
 def count_summarize(gene,species_list,cladeDict):
 	with open(gene+"/"+gene+".fa.tre") as file:
@@ -122,7 +131,10 @@ def single_copy(gene,cladeDict):
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
 	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
-
+	for key,value in cladeDict.items():
+		clade_name=key
+		species_list=value
+		
 	
 	######Saving grass clade######
 	clade_name="1_grass"
