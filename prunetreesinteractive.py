@@ -63,7 +63,7 @@ def prune_main(gene,speciesList,cladeDict):
 	if gene_type=="small":
 		small_family(gene)
 	elif gene_type=="single":
-		single_copy(gene,cladeDict)
+		single_copy(gene,copy_list,cladeDict)
 	else:
 		print ("\nShowing the gene tree.")
 		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
@@ -124,39 +124,14 @@ def small_family(gene):
 	print ("\nGene family is too small. Gene has been added to gene_progress_list.txt as SMALL NOTDONE")
 
 ########SINGLE COPY GENES#################################################
-def single_copy(gene,cladeDict):
-	with open(gene+"/"+gene+".dup.fa.tre") as file:
-		f=file.read()
-	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
+def single_copy(gene,copy_list,cladeDict):
 	for key,value in cladeDict.items():
 		clade_name=key
-		species_list=value
-		
-	
-	######Saving grass clade######
-	clade_name="1_grass"
-	species_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
-	group_list=[i for i in gene_names if i[0:3] in species_list or i[0:4] in species_list]
-	if len(group_list)>0:
-		saving_group(gene, group_list, clade_name)
-	######Saving brass clade######
-	clade_name="1_brass"
-	species_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
-	group_list=[i for i in gene_names if i[0:3] in species_list and i[0:4] != "Bsta"]
-	if len(group_list)>0:
-		saving_group(gene, group_list, clade_name)
-	######Saving fab clade######
-	clade_name="1_fab"
-	species_list=["Mtr","Pvu","Gma","Csa","Ppe","Mdo","Fve"]
-	group_list=[i for i in gene_names if i[0:3] in species_list]
-	if len(group_list)>0:
-		saving_group(gene, group_list, clade_name)
-	######Saving seedfree clade######
-	clade_name="1_seedfree"
-	species_list=["Smo","Ppa","Sfa","Cre","Vca","Csu","CCM","RCC","Olu"]
-	group_list=[i for i in gene_names if i[0:3] in species_list]
-	if len(group_list)>0:
-		saving_group(gene, group_list, clade_name)
+		group_list=[i for i in copy_list if re.sub("\d","",i) in value]
+		if len(group_list)>0:
+			saving_group(gene, group_list, clade_name)
+
+
 	######Saving whole tree######
 	clade_list=["1_all","1_single"]
 	for clade in clade_list:
