@@ -62,7 +62,7 @@ def prune_main(gene,speciesList,cladeDict):
 	if gene_type=="small":
 		small_family(gene)
 	elif gene_type=="single":
-		single_copy(gene)
+		single_copy(gene,cladeDict)
 	else:
 		print ("\nShowing the gene tree.")
 		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
@@ -118,10 +118,12 @@ def small_family(gene):
 	print ("\nGene family is too small. Gene has been added to gene_progress_list.txt as SMALL NOTDONE")
 
 ########SINGLE COPY GENES#################################################
-def single_copy(gene):
+def single_copy(gene,cladeDict):
 	with open(gene+"/"+gene+".dup.fa.tre") as file:
 		f=file.read()
 	gene_names=re.findall("[A-Z][a-z][a-z][0-9][0-9][0-9]|[A-Z][a-z][a-z][a-z][0-9][0-9][0-9]|[A-Z][A-Z][A-Z][0-9][0-9][0-9]", f)
+
+	
 	######Saving grass clade######
 	clade_name="1_grass"
 	species_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
