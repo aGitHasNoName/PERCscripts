@@ -148,7 +148,7 @@ def pre_prune(gene):
 	full_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 	gene_names=full_tree.get_leaf_names()
 	m=100
-	start_gene="{}_A{}".format(gene,str(m))
+	start_gene="{}_all{}".format(gene,str(m))
 	os.system("mkdir {}".format(start_gene))
 	full_tree.write(format=1, outfile="{}/{}.fa.tre".format(start_gene,start_gene))
 	m=m+1
@@ -159,7 +159,7 @@ def pre_prune(gene):
 		print("Tree for {}".format(item))
 		c=raw_input("Split off a monophyletic clade? (y/n)")
 		while c[0]=="y":
-			b="{}_A{}".format(gene, str(m))
+			b="{}_all{}".format(gene, str(m))
 			l.append(b)
 			tree1=PhyloTree("{}/{}.fa.tre".format(item,item))
 			R=tree1.get_midpoint_outgroup()
@@ -167,7 +167,7 @@ def pre_prune(gene):
 			group_list=clade_to_tree(tree1)
 			gene_names=tree1.get_leaf_names()
 			if len(group_list)==len(gene_names):
-				c1=raw_raw_input("\nList includes all copies on tree.\nMake gene with all copies? (y/n)")
+				c1=raw_input("\nList includes all copies on tree.\nMake gene with all copies? (y/n)")
 				if c1=="y":
 					c="n"
 				else:
@@ -186,7 +186,7 @@ def pre_prune(gene):
 				m=m+1
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
-				c=raw_raw_input("Split off a monophyletic clade? (y/n)")
+				c=raw_input("Split off a monophyletic clade? (y/n)")
 	with open("genes_todo.txt", "a") as p:
 		for i in l:
 			p.write(i+"\n")
@@ -274,7 +274,7 @@ def make_other_groups(gene):
 		check_set={str(item[0:3]) for item in group_list}
 		while len(group_list) != len(check_set):
 			view_counts(cut_list, species_list)
-			group_str=raw_raw_input("\nYou can only have one gene per species. Enter more genes to cut, separated by a space: ")
+			group_str=raw_input("\nYou can only have one gene per species. Enter more genes to cut, separated by a space: ")
 			group_list=[item for item in group_list if item not in group_str]
 			check_set={str(item[0:3]) for item in group_list}
 		print("\nThere are "+str(len(group_list))+" genes in this group.\nGroup looks like:")
