@@ -145,23 +145,23 @@ def single_copy(gene,copy_list,cladeDict):
 
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
-	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	full_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 	gene_names=full_tree.get_leaf_names()
 	m=100
 	start_gene="{}_A{}".format(gene,str(m))
 	os.system("mkdir {}".format(start_gene))
-	full_tree.write(format=1, outfile="{}/{}.dup.fa.tre".format(start_gene,start_gene))
+	full_tree.write(format=1, outfile="{}/{}.fa.tre".format(start_gene,start_gene))
 	m=m+1
 	l=[start_gene]
 	for item in l:
-		full_tree=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
+		full_tree=PhyloTree("{}/{}.fa.tre".format(item,item))
 		view_rooted_tree(full_tree)
 		print("Tree for {}".format(item))
 		c=input("Split off a monophyletic clade? (y/n)")
 		while c=="y":
 			b="{}_A{}".format(gene, str(m))
 			l.append(b)
-			tree1=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
+			tree1=PhyloTree("{}/{}.fa.tre".format(item,item))
 			R=tree1.get_midpoint_outgroup()
 			tree1.set_outgroup(R)
 			group_list=clade_to_tree(tree1)
@@ -176,13 +176,13 @@ def pre_prune(gene):
 			else:
 				cut_list=[i for i in gene_names if i not in group_list]
 				os.system("mkdir {}".format(b))
-				tree2=PhyloTree("{}/{}.dup.fa.tre".format(item,item))
+				tree2=PhyloTree("{}/{}.fa.tre".format(item,item))
 				R=tree2.get_midpoint_outgroup()
 				tree2.set_outgroup(R)
 				tree2.prune(group_list,preserve_branch_length=True)
-				tree2.write(format=1, outfile="{}/{}.dup.fa.tre".format(b,b))
+				tree2.write(format=1, outfile="{}/{}.fa.tre".format(b,b))
 				tree1.prune(cut_list,preserve_branch_length=True)
-				tree1.write(format=1, outfile="{}/{}.dup.fa.tre".format(item,item))
+				tree1.write(format=1, outfile="{}/{}.fa.tre".format(item,item))
 				m=m+1
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
