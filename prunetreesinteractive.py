@@ -74,11 +74,7 @@ def prune_main(gene,speciesList,cladeDict):
 		else:
 			choice=raw_input("\nContinue with pruning as single gene family? (y/n)")
 	if choice[0]=="y":
-		make_grass_groups(gene)
-		make_brass_groups(gene)
-		make_fab_groups(gene)
-		make_seedfree_groups(gene)
-		make_other_groups(gene)
+		make_clade_groups(gene,cladeDict,copy_list)
 		make_all_lists(gene)
 
 ######MAKE LIST OF COPIES IN ORTHOGROUP########################################
@@ -191,74 +187,25 @@ def pre_prune(gene):
 		for i in l:
 			p.write(i+"\n")
 	
-########GRASSES###########################################################
-def make_grass_groups(gene):
+########CLADES###########################################################
+def make_clade_groups(gene,cladeDict,copy_list):
 	######Getting all grass gene copies######
-	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-	gene_names=full_tree.get_leaf_names()	
-	species_list=["Sbi","Zma","Sit","Svi","Pvi","Pha","Osa","Bdi","Bsta"]
-	species_keep=[i for i in gene_names if i[0:3] in species_list or i[0:4] in species_list]
-	######Checking if the list is empty######
-	if len(species_keep) == 0:
-		print ("\nThere are no grass genes in this gene family. We will continue with the next clade.")
-	else:
-		######Removing stray within-clade gene copies from the clade######
-		cut_list=cut_stray_genes(gene, species_keep, species_list)
-		######Designating whole clade duplications######
-		define_groups(gene, cut_list, species_list, species_keep, "grass")
-		
-########BRASSES###########################################################
-def make_brass_groups(gene):
-	######Getting all brass gene copies######
-	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-	gene_names=full_tree.get_leaf_names()	
-	species_list=["Ath","Aly","Cru","Cgr","Bst","Bra","Esa"]
-	species_keep=[i for i in gene_names if i[0:3] in species_list and i[0:4] != "Bsta"]
-	######Checking if the list is empty######
-	if len(species_keep) == 0:
-		print ("\nThere are no brass genes in this gene family. We will continue with the next clade.")
-	else:
-		######Removing stray within-clade gene copies from the clade######
-		cut_list=cut_stray_genes(gene, species_keep, species_list)
-		######Designating whole clade duplications######
-		define_groups(gene, cut_list, species_list, species_keep, "brass")
+	for key,value in cladeDict.items():
+		species_keep=[i for i in copy_list if re.sub("\d","",i) in value]
+		######Checking if the list is empty######
+		if len(species_keep) == 0:
+			print ("\nThere are no genes in clade {} for {}. We will continue with the next clade.".format(key,gene))
+		else:
+			######Removing stray within-clade gene copies from the clade######
+			cut_list=cut_stray_genes(gene, species_keep, value)
+			######Designating whole clade duplications######
+			define_groups(gene, cut_list, value, species_keep, key)
 
-##########FABS############################################################
-def make_fab_groups(gene):
-	######Getting all fab gene copies######
-	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-	gene_names=full_tree.get_leaf_names()	
-	species_list=["Mtr","Pvu","Gma","Csa","Ppe","Mdo","Fve"]
-	species_keep=[i for i in gene_names if i[0:3] in species_list]
-	######Checking if the list is empty######
-	if len(species_keep) == 0:
-		print ("\nThere are no fab genes in this gene family. We will continue with the next clade.")
-	else:
-		######Removing stray within-clade gene copies from the clade######
-		cut_list=cut_stray_genes(gene, species_keep, species_list)
-		######Designating whole clade duplications######
-		define_groups(gene, cut_list, species_list, species_keep, "fab")
-		
-##########SEEDFREE#########################################################
-def make_seedfree_groups(gene):
-	######Getting all seedfree gene copies######
-	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
-	gene_names=full_tree.get_leaf_names()	
-	species_list=["Smo","Ppa","Sfa","Cre","Vca","Csu","CCM","RCC","Olu"]
-	species_keep=[i for i in gene_names if i[0:3] in species_list]
-	######Checking if the list is empty######
-	if len(species_keep) == 0:
-		print ("\nThere are no seedfree genes in this gene family. We will continue with the rest of the tree.")
-	else:
-		######Removing stray within-clade gene copies from the clade######
-		cut_list=cut_stray_genes(gene, species_keep, species_list)
-		######Designating whole clade duplications######
-		define_groups(gene, cut_list, species_list, species_keep, "seedfree")
 
 ########OTHERS##############################################################
 def make_other_groups(gene):
 	######Getting all other gene copies######
-	full_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	full_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 	gene_names=full_tree.get_leaf_names()	
 	species_list=['Cpa', 'Gra', 'Tca', 'Csi', 'Ccl', 'Mes', 'Rco', 'Lus', 'Ptr', 'Spu', 'Egr', 'Vvi', 'Kma', 'Stu', 'Sly', 'Mgu', 'Aco', 'Mac', 'Spo', 'Atr']
 	species_keep=[i for i in gene_names if i[0:3] in species_list]
@@ -321,7 +268,7 @@ def make_all_lists(gene):
 ######Remove stray genes from clade tree##############################
 def cut_stray_genes(gene, species_keep, species_list):
 	######Showing the tree######
-	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
 	if len(species_keep)>1:
 		view_rooted_tree(clade_tree)
@@ -351,7 +298,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 ######Remove stray genes from other tree##############################
 def cut_stray_other(gene, species_keep, species_list):
 	######Showing the tree######
-	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
 	if len(species_keep)>1:
 		view_rooted_tree(clade_tree)
@@ -384,7 +331,7 @@ def cut_stray_other(gene, species_keep, species_list):
 
 ######Making groups#####################################################
 def define_groups(gene, cut_list, species_list, species_keep, clade_name):
-	clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+	clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 	clade_tree.prune(cut_list,preserve_branch_length=True)
 	n=1
 	######Designating whole clade duplications######
@@ -412,7 +359,7 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 			choice3=raw_input("\nEnter n to abandon this list and start again.")
 		if choice3[0]=="y":
 			######Saving group as file and add group to master list######
-			clade_name="{}_{}".format(n, clade_name)
+			clade_name="{}_{}".format(clade_name, n)
 			saving_group(gene, group_list, clade_name)
 			n=n+1
 			cut_list=[i for i in cut_list if i not in group_list]
@@ -434,12 +381,12 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 			
 ######Checking that there is only one gene per species####################			
 def check_single_group(group_list):		
-	check_set={str(item[0:3]) for item in group_list}
+	check_set={str(re.sub("\d","",i)) for i in group_list}
 	while len(group_list) != len(check_set):
 		print (group_list)
 		group_str=raw_input("\nYou can only have one gene per species. Enter genes for the group, separated by a space: ")
-		group_list=[item for item in group_str.split()]
-		check_set={str(item[0:3]) for item in group_list}
+		group_list=[i for i in group_str.split()]
+		check_set={str(re.sub("\d","",i)) for i in group_list}
 	return (group_list)
 		
 ######Saving group as file and add group to master list###################
