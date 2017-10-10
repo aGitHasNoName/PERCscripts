@@ -24,7 +24,7 @@ def main():
 	genes_todo=[line.rstrip() for line in open(sys.argv[1])]
 	speciesList,cladeDict=makeSpeciesList()
 	for gene in genes_todo:
-		c=input("\nPrune gene {}? (y/n)".format(gene))
+		c=raw_input("\nPrune gene {}? (y/n)".format(gene))
 		if c[0]=="y":
 			prune_main(gene,speciesList,cladeDict)
 			gtd_copy=[line.rstrip() for line in open(sys.argv[1])]
@@ -68,11 +68,11 @@ def prune_main(gene,speciesList,cladeDict):
 		print ("\nShowing the gene tree.")
 		clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 		view_rooted_tree(clade_tree)
-		choice2=input("\nWould you like to split this gene family into multiple families? (y/n)")
+		choice2=raw_input("\nWould you like to split this gene family into multiple families? (y/n)")
 		if choice2[0]=="y":
 			pre_prune(gene)
 		else:
-			choice=input("\nContinue with pruning as single gene family? (y/n)")
+			choice=raw_input("\nContinue with pruning as single gene family? (y/n)")
 	if choice[0]=="y":
 		make_grass_groups(gene)
 		make_brass_groups(gene)
@@ -157,8 +157,8 @@ def pre_prune(gene):
 		full_tree=PhyloTree("{}/{}.fa.tre".format(item,item))
 		view_rooted_tree(full_tree)
 		print("Tree for {}".format(item))
-		c=input("Split off a monophyletic clade? (y/n)")
-		while c=="y":
+		c=raw_input("Split off a monophyletic clade? (y/n)")
+		while c[0]=="y":
 			b="{}_A{}".format(gene, str(m))
 			l.append(b)
 			tree1=PhyloTree("{}/{}.fa.tre".format(item,item))
@@ -167,7 +167,7 @@ def pre_prune(gene):
 			group_list=clade_to_tree(tree1)
 			gene_names=tree1.get_leaf_names()
 			if len(group_list)==len(gene_names):
-				c1=input("\nList includes all copies on tree.\nMake gene with all copies? (y/n)")
+				c1=raw_raw_input("\nList includes all copies on tree.\nMake gene with all copies? (y/n)")
 				if c1=="y":
 					c="n"
 				else:
@@ -186,7 +186,7 @@ def pre_prune(gene):
 				m=m+1
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
-				c=input("Split off a monophyletic clade? (y/n)")
+				c=raw_raw_input("Split off a monophyletic clade? (y/n)")
 	with open("genes_todo.txt", "a") as p:
 		for i in l:
 			p.write(i+"\n")
@@ -274,7 +274,7 @@ def make_other_groups(gene):
 		check_set={str(item[0:3]) for item in group_list}
 		while len(group_list) != len(check_set):
 			view_counts(cut_list, species_list)
-			group_str=input("\nYou can only have one gene per species. Enter more genes to cut, separated by a space: ")
+			group_str=raw_raw_input("\nYou can only have one gene per species. Enter more genes to cut, separated by a space: ")
 			group_list=[item for item in group_list if item not in group_str]
 			check_set={str(item[0:3]) for item in group_list}
 		print("\nThere are "+str(len(group_list))+" genes in this group.\nGroup looks like:")
@@ -331,9 +331,9 @@ def cut_stray_genes(gene, species_keep, species_list):
 	cut_list=species_keep
 	view_counts(cut_list, species_list)
 	######Removing stray within-clade gene copies from the clade######
-	cut_question=input("\nAre there stray genes to cut? (y/n)")
+	cut_question=raw_input("\nAre there stray genes to cut? (y/n)")
 	while cut_question[0]== "y":
-		cut_gene_str=input("\nEnter genes to cut, separated by a space: ")
+		cut_gene_str=raw_input("\nEnter genes to cut, separated by a space: ")
 		cut_gene_list=[item for item in cut_gene_str.split()]
 		cut_list=[i for i in cut_list if i not in cut_gene_list]
 		if set(cut_gene_list).issubset(species_keep):
@@ -345,7 +345,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 				print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
 		else:
 			print ("\nAt least one gene is not found on the tree. You entered:\n"+cut_gene_str+"\nCut abandoned.")
-		cut_question=input("\nAre there more genes to cut? (y/n)")
+		cut_question=raw_input("\nAre there more genes to cut? (y/n)")
 	return (cut_list)
 
 ######Remove stray genes from other tree##############################
@@ -361,13 +361,13 @@ def cut_stray_other(gene, species_keep, species_list):
 	cut_list=species_keep
 	view_counts(cut_list, species_list)
 	######Removing stray within-clade gene copies from the clade######
-	cut_question=input("\nAre there stray genes to cut? (y/n)")
+	cut_question=raw_input("\nAre there stray genes to cut? (y/n)")
 	while cut_question[0]== "y":
-		choice4=input("\nIf this group is a monophyletic clade, type c.\nOtherwise, type n.")
+		choice4=raw_input("\nIf this group is a monophyletic clade, type c.\nOtherwise, type n.")
 		if choice4[0]=="c":
 			cut_gene_list=choose_clade(clade_tree)
 		else:
-			cut_gene_str=input("\nEnter genes to cut, separated by a space: ")
+			cut_gene_str=raw_input("\nEnter genes to cut, separated by a space: ")
 			cut_gene_list=[item for item in cut_gene_str.split()]
 		cut_list=[i for i in cut_list if i not in cut_gene_list]
 		if set(cut_gene_list).issubset(species_keep):
@@ -379,7 +379,7 @@ def cut_stray_other(gene, species_keep, species_list):
 				print ("\nSomething is wrong with the way the genes were entered. You entered:\n"+cut_gene_str+"\nCut abandoned.")
 		else:
 			print ("\nAt least one gene is not found on the tree. You entered:\n"+cut_gene_str+"\nCut abandoned.")
-		cut_question=input("\nAre there more genes to cut? (y/n)")
+		cut_question=raw_input("\nAre there more genes to cut? (y/n)")
 	return (cut_list)
 
 ######Making groups#####################################################
@@ -388,15 +388,15 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 	clade_tree.prune(cut_list,preserve_branch_length=True)
 	n=1
 	######Designating whole clade duplications######
-	choice=input("\nWould you like to make a group? (y/n)")
+	choice=raw_input("\nWould you like to make a group? (y/n)")
 	while choice[0] == "y":
-		choice4=input("\nIf this group includes all the genes left on the tree, type a.\nIf this group is a monophyletic clade, type c.\nOtherwise, type n.")
+		choice4=raw_input("\nIf this group includes all the genes left on the tree, type a.\nIf this group is a monophyletic clade, type c.\nOtherwise, type n.")
 		if choice4[0]=="a":
 			group_list=cut_list
 		elif choice4[0]=="c":
 			group_list=choose_clade(clade_tree)
 		else:
-			group_str=input("\nEnter genes for the group, separated by a space: ")
+			group_str=raw_input("\nEnter genes for the group, separated by a space: ")
 			group_list=[item for item in group_str.split()]
 		######Checking that there is only one gene per species######
 		group_list=check_single_group(group_list)
@@ -405,11 +405,11 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 			######Allow a chance to back out, for example if user forgot to enter spaces######
 			print("\nThere are "+str(len(group_list))+" genes in this group.\nGroup looks like:")
 			print (group_list)
-			choice3=input("\nMake the group? (y/n)")
+			choice3=raw_input("\nMake the group? (y/n)")
 		else:	
 			print ("\nAt least one gene is not found on the tree. You entered:\n")
 			print (group_list)
-			choice3=input("\nEnter n to abandon this list and start again.")
+			choice3=raw_input("\nEnter n to abandon this list and start again.")
 		if choice3[0]=="y":
 			######Saving group as file and add group to master list######
 			clade_name="{}_{}".format(n, clade_name)
@@ -422,22 +422,22 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 				choice="n"
 			######Preparing for next group######
 			else:
-				choice2=input("\nWould you like to view the tree with the group removed? (y/n)")
+				choice2=raw_input("\nWould you like to view the tree with the group removed? (y/n)")
 				if choice2[0] == "y":
 					clade_tree.prune(cut_list,preserve_branch_length=True)
 					view_rooted_tree(clade_tree)
 					view_counts(cut_list, species_list)
-				choice=input("\nWould you like to make another group for this clade? (y/n)")
+				choice=raw_input("\nWould you like to make another group for this clade? (y/n)")
 		else: 
 			print("\nGroup abandoned.")
-			choice=input("\nWould you like to make a group for this clade? (y/n)")
+			choice=raw_input("\nWould you like to make a group for this clade? (y/n)")
 			
 ######Checking that there is only one gene per species####################			
 def check_single_group(group_list):		
 	check_set={str(item[0:3]) for item in group_list}
 	while len(group_list) != len(check_set):
 		print (group_list)
-		group_str=input("\nYou can only have one gene per species. Enter genes for the group, separated by a space: ")
+		group_str=raw_input("\nYou can only have one gene per species. Enter genes for the group, separated by a space: ")
 		group_list=[item for item in group_str.split()]
 		check_set={str(item[0:3]) for item in group_list}
 	return (group_list)
@@ -468,8 +468,8 @@ def view_rooted_tree(clade_tree):
 def choose_clade(clade_tree):
 	c="y"
 	while c=="y":
-		leaf1=input("\nEnter the gene on one end of the group.")
-		leaf2=input("\nEnter the gene on the other end of the group.")
+		leaf1=raw_input("\nEnter the gene on one end of the group.")
+		leaf2=raw_input("\nEnter the gene on the other end of the group.")
 		try:
 			mrca = clade_tree.get_common_ancestor(leaf1,leaf2)
 			group_list=mrca.get_leaf_names()
@@ -490,8 +490,8 @@ def view_counts(cut_list, species_list):
 def clade_to_tree(tree):
 	c="y"
 	while c=="y":
-		leaf1=input("\nEnter the gene on one end of the group.")
-		leaf2=input("\nEnter the gene on the other end of the group.")
+		leaf1=raw_input("\nEnter the gene on one end of the group.")
+		leaf2=raw_input("\nEnter the gene on the other end of the group.")
 		try:
 			mrca = tree.get_common_ancestor(leaf1,leaf2)
 			group_list=mrca.get_leaf_names()
