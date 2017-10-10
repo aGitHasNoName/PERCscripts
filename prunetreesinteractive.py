@@ -193,13 +193,16 @@ def make_clade_groups(gene,cladeDict,copy_list):
 	for key,value in cladeDict.items():
 		species_keep=[i for i in copy_list if re.sub("\d","",i) in value]
 		######Checking if the list is empty######
-		if len(species_keep) == 0:
-			print ("\nThere are no genes in clade {} for {}. We will continue with the next clade.".format(key,gene))
+		if key=="noclade":
+			##PUT MAKE OTHER GROUPS FUNCTION HERE##
 		else:
-			######Removing stray within-clade gene copies from the clade######
-			cut_list=cut_stray_genes(gene, species_keep, value)
-			######Designating whole clade duplications######
-			define_groups(gene, cut_list, value, species_keep, key)
+			if len(species_keep) == 0:
+				print ("\nThere are no genes in clade {} for {}. We will continue with the next clade.".format(key,gene))
+			else:
+				######Removing stray within-clade gene copies from the clade######
+				cut_list=cut_stray_genes(gene, species_keep, value)
+				######Designating whole clade duplications######
+				define_groups(gene, cut_list, value, species_keep, key)
 
 
 ########OTHERS##############################################################
