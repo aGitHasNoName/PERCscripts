@@ -66,7 +66,7 @@ def prune_main(gene,speciesList,cladeDict):
 		single_copy(gene,copy_list,cladeDict)
 	else:
 		print ("\nShowing the gene tree.")
-		clade_tree=PhyloTree(gene+"/"+gene+".dup.fa.tre")
+		clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
 		view_rooted_tree(clade_tree)
 		choice2=input("\nWould you like to split this gene family into multiple families? (y/n)")
 		if choice2[0]=="y":
@@ -104,7 +104,7 @@ def count_summarize(gene,copy_list,species_list,cladeDict):
 	print("number of species represented (out of {} possible): {}".format(species_total,n_species))
 	
 	for key,value in cladeDict.items():
-		clade_count={k,v in count_dict.items() if k in value}
+		clade_count={k:v for k,v in count_dict.items() if k in value}
 		print("\nthe number of copies per species in clade {}:".format(key))
 		print(clade_count)
 
