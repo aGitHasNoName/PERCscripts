@@ -131,7 +131,7 @@ def single_copy(gene,copy_list,cladeDict):
 		if len(group_list)>0:
 			saving_group(gene, group_list, clade_name)
 	######Saving whole tree######
-	clade_list=["1_all","1_single"]
+	clade_list=["all_1","single_1"]
 	for clade in clade_list:
 		with open(gene+"/"+gene+"_"+clade+"_prune.txt", "a") as allfile:
 			for copy in copy_list:
