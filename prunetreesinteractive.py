@@ -45,8 +45,8 @@ def makeSpeciesList():
 	cladeDict={}
 	with open(sys.argv[2],"r") as f:
 		for line in f.readlines():
-			species=line.split("\t")[0].rstrip()
-			clade=line.split("\t")[1].rstrip()
+			species=line[0]
+			clade=line[1].rstrip()
 			speciesList.append(species)
 			if clade not in cladeDict.keys():
 				cladeDict[clade]=[]
