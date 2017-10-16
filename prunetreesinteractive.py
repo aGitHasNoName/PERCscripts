@@ -194,7 +194,7 @@ def make_clade_groups(gene,cladeDict,copy_list):
 		species_keep=[i for i in copy_list if re.sub("\d","",i) in value]
 		######Checking if the list is empty######
 		if key=="noclade":
-			##PUT MAKE OTHER GROUPS FUNCTION HERE##
+			make_other_groups(gene, species_keep)
 		else:
 			if len(species_keep) == 0:
 				print ("\nThere are no genes in clade {} for {}. We will continue with the next clade.".format(key,gene))
@@ -206,12 +206,8 @@ def make_clade_groups(gene,cladeDict,copy_list):
 
 
 ########OTHERS##############################################################
-def make_other_groups(gene):
-	######Getting all other gene copies######
+def make_other_groups(gene, species_keep, species_list):
 	full_tree=PhyloTree(gene+"/"+gene+".fa.tre")
-	gene_names=full_tree.get_leaf_names()	
-	species_list=['Cpa', 'Gra', 'Tca', 'Csi', 'Ccl', 'Mes', 'Rco', 'Lus', 'Ptr', 'Spu', 'Egr', 'Vvi', 'Kma', 'Stu', 'Sly', 'Mgu', 'Aco', 'Mac', 'Spo', 'Atr']
-	species_keep=[i for i in gene_names if i[0:3] in species_list]
 	######Checking if the list is empty######
 	if len(species_keep) == 0:
 		print ("\nThere are no other genes in this gene family.")
@@ -231,12 +227,12 @@ def make_other_groups(gene):
 		print (group_list)
 		print ("\nMaking the group.")
 		######Saving gene group as a file######
-		with open(gene+"/"+gene+"_other_prune.txt", "a") as group_file:
+		with open(gene+"/"+gene+"_noclade_prune.txt", "a") as group_file:
 				for i in group_list:
 					group_file.write(i+"\n")
 		######Saving name of group to a master list######
 		with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
-			master.write(gene+"_other\n")
+			master.write(gene+"_noclade\n")
 
 ############ALL#########################################################
 def make_all_lists(gene):
@@ -245,7 +241,7 @@ def make_all_lists(gene):
 	b=[i for i in master_list if "brass" in i]
 	f=[i for i in master_list if "fab" in i]
 	s=[i for i in master_list if "seedfree" in i]
-	o=[i for i in master_list if "other" in i]
+	o=[i for i in master_list if "noclade" in i]
 	clades=[g,b,f,s,o]
 	clades=[i for i in clades if len(i)>0]
 	n=1
