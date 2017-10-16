@@ -14,8 +14,8 @@ from ete3 import PhyloTree
 ########################################################
 
 ######Checks for Python3################################
-if (sys.version_info < (3,0)):
-	print("Python 3 required!\n")
+if (sys.version_info > (3,0)):
+	print("Python 2 required!\n")
 	sys.exit(1)
 
 ######MAIN FUNCTIONS###############################################################
@@ -235,29 +235,27 @@ def make_other_groups(gene, species_keep, species_list):
 			master.write(gene+"_noclade\n")
 
 ############ALL#########################################################
-def make_all_lists(gene):
+def make_all_lists(gene, cladeDict):
 	master_list=[line.rstrip() for line in open(gene+"/"+gene+"_master_tree_list.txt")]
-	g=[i for i in master_list if "grass" in i]
-	b=[i for i in master_list if "brass" in i]
-	f=[i for i in master_list if "fab" in i]
-	s=[i for i in master_list if "seedfree" in i]
-	o=[i for i in master_list if "noclade" in i]
-	clades=[g,b,f,s,o]
-	clades=[i for i in clades if len(i)>0]
+	clades=[]
+	for key in cladeDict:
+		clade_list=[i for i in master_list if key in i]
+		if len(clade_list)>0:
+			clades.append(clade_list)
 	n=1
 	for i in itertools.product(*clades):
 		filenames=[]
 		for x in range(len(i)):
 			filenames.append(gene+"/"+i[x]+"_prune.txt")
-		with open(gene+"/"+gene+"_"+str(n)+"_all.txt", "w") as allfile:
+		with open(gene+"/"+gene+"_all_"+str(n)+".txt", "w") as allfile:
 			for fname in filenames:
 				with open(fname) as infile:
 					allfile.write(infile.read())
 		with open(gene+"/"+gene+"_master_tree_list.txt", "a") as master:
-			master.write(gene+"_"+str(n)+"_all\n")
+			master.write(gene+"_all_"+str(n)+"\n")
 		n=n+1	
 	if n==2:
-		os.system("cp {}/{}_1_all.txt {}/{}_1_single.txt".format(gene,gene,gene,gene))
+		os.system("cp {}/{}_all_1.txt {}/{}_single.txt".format(gene,gene,gene,gene))
 	with open("gene_progress_list.txt", "a") as p:
 		p.write("{}\tNORMAL\tDONE\n".format(gene))
 	print("\nComplete.\nGene has been added to gene_progress_list.txt as NORMAL DONE.")
