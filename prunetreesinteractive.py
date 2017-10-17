@@ -122,7 +122,7 @@ def small_family(gene):
 ########SINGLE COPY GENES#################################################
 def single_copy(gene,copy_list,cladeDict):
 	for key,value in cladeDict.items():
-		clade_name=key
+		clade_name=key+"_1"
 		group_list=[i for i in copy_list if re.sub("\d","",i) in value]
 		if len(group_list)>0:
 			saving_group(gene, group_list, clade_name)
@@ -356,8 +356,8 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 			choice3=raw_input("\nEnter n to abandon this list and start again.")
 		if choice3[0]=="y":
 			######Saving group as file and add group to master list######
-			clade_name="{}_{}".format(clade_name, n)
-			saving_group(gene, group_list, clade_name)
+			clade_filename="{}_{}".format(clade_name, n)
+			saving_group(gene, group_list, clade_filename)
 			n=n+1
 			cut_list=[i for i in cut_list if i not in group_list]
 			######Checking to see if the tree is empty######
