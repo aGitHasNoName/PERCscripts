@@ -357,7 +357,7 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 				choice3=raw_input("\nEnter n to abandon this list and start again.")
 			if choice3[0]=="y":
 				######Saving group as file and add group to master list######
-				if subclade_name="ynyn":
+				if subclade_name=="ynyn":
 					clade_filename="{}_{}".format(clade_name, n)
 					saving_group(gene, i, clade_filename)
 				else:
@@ -386,11 +386,12 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 			
 ######Checking that there is only one gene per species####################			
 def check_single_group(group_list):		
+	group_list2=[]
 	subclade_name="ynyn"
 	check_set={str(re.sub("\d","",i)) for i in group_list}
 	while len(group_list) != len(check_set):
 		print (group_list)
-		choice=raw_input("\nYou can only have one gene per species. If there is a subclade duplication that you would like to designate, enter y. If you make a typo, enter n:" )
+		choice=raw_input("\nYou can only have one gene per species. If there is a subclade duplication that you would like to designate, enter y. If you would like to retype the gene names, enter n:" )
 		while choice[0]=="y":
 			subclade_name=raw_input("\nEnter a name for the subclade:")
 			subclade_count=raw_input("\nHow many copies of the subclade are in the clade?")
@@ -398,12 +399,19 @@ def check_single_group(group_list):
 				choice="n"
 			else:
 				for i in range(subclade_count):
-					subclade_list=
+					subclade_str=raw_input("\nDuplication number {}. \nEnter the gene names for this duplication, separated by a space:".format(str(i)))
+					subclade_list=[j for j in subclade_str.split()]
+					subclade_species=[m.strip("\d") for m in subclade_list]
+					genes=[gene for gene in group_list if gene.strip("\d") not in subclade_species]
+					subclade_list=subclade_list+genes
+					group_list2.append(subclade_list)
 		else:
 			group_str=raw_input("Enter genes for the group, separated by a space: ")
-			group_list=[i for i in group_str.split()]			
-		check_set={str(re.sub("\d","",i)) for i in group_list}
-	return (group_list,subclade_name)
+			group_list=[i for i in group_str.split()]
+			group_list2.append(group_list)		
+	else:
+		group_list2.append(group_list)
+	return (group_list2,subclade_name)
 		
 ######Saving group as file and add group to master list###################
 def saving_group(gene, group_list, clade_name):
