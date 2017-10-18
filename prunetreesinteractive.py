@@ -395,10 +395,10 @@ def check_single_group(group_list):
 		while choice[0]=="y":
 			subclade_name=raw_input("\nEnter a name for the subclade:")
 			subclade_count=raw_input("\nHow many copies of the subclade are in the clade?")
-			if subclade_count==1:
+			if int(subclade_count)==1:
 				choice="n"
 			else:
-				for i in range(subclade_count):
+				for i in range(int(subclade_count)):
 					subclade_str=raw_input("\nDuplication number {}. \nEnter the gene names for this duplication, separated by a space:".format(str(i)))
 					subclade_list=[j for j in subclade_str.split()]
 					subclade_species=[m.strip("\d") for m in subclade_list]
