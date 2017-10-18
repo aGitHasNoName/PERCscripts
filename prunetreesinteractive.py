@@ -389,7 +389,7 @@ def check_single_group(group_list):
 	group_list2=[]
 	subclade_name="ynyn"
 	check_set={str(re.sub("\d","",i)) for i in group_list}
-	while len(group_list) != len(check_set):
+	if len(group_list) != len(check_set):
 		print (group_list)
 		choice=raw_input("\nYou can only have one gene per species. If there is a subclade duplication that you would like to designate, enter y. If you would like to retype the gene names, enter n:" )
 		if choice[0]=="y":
