@@ -74,7 +74,7 @@ def prune_main(gene,speciesList,cladeDict):
 		else:
 			choice=raw_input("\nContinue with pruning as single gene family? (y/n)")
 	if choice[0]=="y":
-		make_clade_groups(gene,cladeDict,copy_list)
+		make_clade_groups(gene,cladeDict,copy_list,species_list)
 		make_all_lists(gene)
 
 ######MAKE LIST OF COPIES IN ORTHOGROUP########################################
@@ -188,7 +188,7 @@ def pre_prune(gene):
 			p.write(i+"\n")
 	
 ########CLADES###########################################################
-def make_clade_groups(gene,cladeDict,copy_list):
+def make_clade_groups(gene,cladeDict,copy_list,species_list):
 	######Getting all grass gene copies######
 	for key,value in cladeDict.items():
 		species_keep=[i for i in copy_list if re.sub("\d","",i) in value]
