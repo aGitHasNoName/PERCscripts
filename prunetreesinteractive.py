@@ -74,8 +74,8 @@ def prune_main(gene,speciesList,cladeDict):
 		else:
 			choice=raw_input("\nContinue with pruning as single gene family? (y/n)")
 	if choice[0]=="y":
-		make_clade_groups(gene,cladeDict,copy_list,species_list)
-		make_all_lists(gene)
+		make_clade_groups(gene,cladeDict,copy_list,speciesList)
+		make_all_lists(gene,cladeDict)
 
 ######MAKE LIST OF COPIES IN ORTHOGROUP########################################
 def copies_in_group(gene):
