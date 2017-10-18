@@ -343,41 +343,50 @@ def define_groups(gene, cut_list, species_list, species_keep, clade_name):
 			group_str=raw_input("\nEnter genes for the group, separated by a space: ")
 			group_list=[item for item in group_str.split()]
 		######Checking that there is only one gene per species######
-		group_list=check_single_group(group_list)
+		group_list2,subclade_name=check_single_group(group_list)
 		######Checking for typos######
-		if set(group_list).issubset(species_keep):
-			######Allow a chance to back out, for example if user forgot to enter spaces######
-			print("\nThere are "+str(len(group_list))+" genes in this group.\nGroup looks like:")
-			print (group_list)
-			choice3=raw_input("\nMake the group? (y/n)")
-		else:	
-			print ("\nAt least one gene is not found on the tree. You entered:\n")
-			print (group_list)
-			choice3=raw_input("\nEnter n to abandon this list and start again.")
-		if choice3[0]=="y":
-			######Saving group as file and add group to master list######
-			clade_filename="{}_{}".format(clade_name, n)
-			saving_group(gene, group_list, clade_filename)
-			n=n+1
-			cut_list=[i for i in cut_list if i not in group_list]
-			######Checking to see if the tree is empty######
-			if len(cut_list) == 0:
-				print("\nThe tree is now empty. We will continue with the next clade.")
-				choice="n"
+		for i in group_list2:
+			if set(i).issubset(species_keep):
+				######Allow a chance to back out, for example if user forgot to enter spaces######
+				print("\nThere are "+str(len(i))+" genes in this group.\nGroup looks like:")
+				print (i)
+				choice3=raw_input("\nMake the group? (y/n)")
+			else:	
+				print ("\nAt least one gene is not found on the tree. You entered:\n")
+				print (i)
+				choice3=raw_input("\nEnter n to abandon this list and start again.")
+			if choice3[0]=="y":
+				######Saving group as file and add group to master list######
+				if subclade_name="ynyn":
+					clade_filename="{}_{}".format(clade_name, n)
+					saving_group(gene, i, clade_filename)
+				else:
+					clade_filename="{}_{}_{}".format(clade_name, subclade_name, n)
+					saving_group(gene, i, clade_filename)
+				n=n+1
+			else: 
+				print("\nGroup abandoned.")
+				choice=raw_input("\nWould you like to make a group for this clade? (y/n)")
+			cut_list=[j for j in cut_list if j not in i]
+		######Checking to see if the tree is empty######
+		if len(cut_list) == 0:
+			print("\nThe tree is now empty. We will continue with the next clade.")
+			choice="n"
 			######Preparing for next group######
-			else:
-				choice2=raw_input("\nWould you like to view the tree with the group removed? (y/n)")
-				if choice2[0] == "y":
-					clade_tree.prune(cut_list,preserve_branch_length=True)
-					view_rooted_tree(clade_tree)
-					view_counts(cut_list, species_list)
+		else:
+			choice2=raw_input("\nWould you like to view the tree with the group removed? (y/n)")
+			if choice2[0] == "y":
+				clade_tree.prune(cut_list,preserve_branch_length=True)
+				view_rooted_tree(clade_tree)
+				view_counts(cut_list, species_list)
 				choice=raw_input("\nWould you like to make another group for this clade? (y/n)")
-		else: 
-			print("\nGroup abandoned.")
-			choice=raw_input("\nWould you like to make a group for this clade? (y/n)")
+			else: 
+				print("\nGroup abandoned.")
+				choice=raw_input("\nWould you like to make a group for this clade? (y/n)")
 			
 ######Checking that there is only one gene per species####################			
 def check_single_group(group_list):		
+	subclade_name="ynyn"
 	check_set={str(re.sub("\d","",i)) for i in group_list}
 	while len(group_list) != len(check_set):
 		print (group_list)
@@ -389,12 +398,12 @@ def check_single_group(group_list):
 				choice="n"
 			else:
 				for i in range(subclade_count):
-					
+					subclade_list=
 		else:
 			group_str=raw_input("Enter genes for the group, separated by a space: ")
 			group_list=[i for i in group_str.split()]			
 		check_set={str(re.sub("\d","",i)) for i in group_list}
-	return (group_list)
+	return (group_list,subclade_name)
 		
 ######Saving group as file and add group to master list###################
 def saving_group(gene, group_list, clade_name):
