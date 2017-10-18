@@ -194,7 +194,7 @@ def make_clade_groups(gene,cladeDict,copy_list):
 		species_keep=[i for i in copy_list if re.sub("\d","",i) in value]
 		######Checking if the list is empty######
 		if key=="noclade":
-			make_other_groups(gene, species_keep)
+			make_other_groups(gene, species_keep, species_list)
 		else:
 			if len(species_keep) == 0:
 				print ("\nThere are no genes in clade {} for {}. We will continue with the next clade.".format(key,gene))
@@ -396,16 +396,16 @@ def check_single_group(group_list):
 			subclade_name=raw_input("\nEnter a name for the subclade:")
 			subclade_count=raw_input("\nHow many copies of the subclade are in the clade?")
 			if int(subclade_count)==1:
-				choice="n"
+				pass
 			else:
 				for i in range(int(subclade_count)):
 					subclade_str=raw_input("\nDuplication number {}. \nEnter the gene names for this duplication, separated by a space:".format(str(i+1)))
 					subclade_list=[j for j in subclade_str.split()]
-					subclade_species=[m.strip("\d") for m in subclade_list]
-					genes=[gene for gene in group_list if gene.strip("\d") not in subclade_species]
-					subclade_list=subclade_list+genes
+					subclade_species=[re.sub("\d","",m) for m in subclade_list]
+					for g in group_list:
+						if re.sub("\d","",g) not in subclade_species:
+							subclade_list.append(g)
 					group_list2.append(subclade_list)
-				choice="n"
 		else:
 			group_str=raw_input("Enter genes for the group, separated by a space: ")
 			group_list=[i for i in group_str.split()]
