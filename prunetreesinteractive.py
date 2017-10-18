@@ -405,6 +405,7 @@ def check_single_group(group_list):
 					genes=[gene for gene in group_list if gene.strip("\d") not in subclade_species]
 					subclade_list=subclade_list+genes
 					group_list2.append(subclade_list)
+				choice="n"
 		else:
 			group_str=raw_input("Enter genes for the group, separated by a space: ")
 			group_list=[i for i in group_str.split()]
