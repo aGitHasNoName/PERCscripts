@@ -42,3 +42,4 @@ def remove_species_dups(path):
 	l2=[i.lstrip("\n--") for i in l2]
 	return(l2,t2)
 
+main()
