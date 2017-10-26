@@ -12,7 +12,7 @@ def main():
 	species_set=make_species_set(path)
 	if len(copy_list)==len(species_set):
 		print("{} is SINGLE".format(path))
-		with open("{}.2.fa.tre".format(path),"w") as f:
+		with open("{}_single.txt".format(path),"w") as f:
 			for i in copy_list:
 				f.write("{}\n".format(i))
 	else:
