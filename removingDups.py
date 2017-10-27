@@ -19,7 +19,7 @@ def main():
 	else:
 		diff=len(copy_list)-len(species_set)
 		print("For {} there are {} remaining duplicate species".format(path,diff))
-		t2.write("{}.2.fa.tre".format(path),"w")
+		t2.write(outfile="{}.2.fa.tre".format(path))
 
 def make_species_set(path):
 	t = PhyloTree("{}.fa.tre".format(path))
