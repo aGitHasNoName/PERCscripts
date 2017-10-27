@@ -1,6 +1,7 @@
 from ete3 import PhyloTree
 import re
 import os
+import sys
 
 ###This script removes within species duplications. 
 ###sys.argv[1] is path to a tree file called {}.fa.tre.
