@@ -63,7 +63,7 @@ def remove_some_dups(count_dict,species_keep):
 		for j in species_keep:
 			if re.sub("\d","",j)==i:
 				i_keep.append(j)
-		for k in range(1,n):
+		for k in range(1,2):
 			new_keep.append(i_keep[k])
 	return(new_keep)
 
