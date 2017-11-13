@@ -36,7 +36,7 @@ def removeShort(t,path):
 	with open("{}.fa.aln".format(path), "r") as f:	
 		for record in SeqIO.parse(f, "fasta"):
 			aa=re.sub("\-","",str(record.seq))
-			if len(aa) > sys.argv[2]*aaLen_median:
+			if len(aa) > float(sys.argv[2])*aaLen_median:
 				keep_list.append(record.id)
 	t.prune(keep_list,preserve_branch_length=True)
 	return(t)
