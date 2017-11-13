@@ -9,8 +9,10 @@ import sys
 
 def main():
 	path=sys.argv[1]
-	copy_list,t2=remove_species_dups(path)
-	species_set=make_species_set(path)
+	t = PhyloTree("{}.fa.tre".format(path))
+	species_set=make_species_set(path,t)
+	t=removeShort(t)
+	copy_list,t2=remove_species_dups(path,t)
 	if len(copy_list)==len(species_set):
 		print("{} is SINGLE".format(path))
 		with open("{}_single.txt".format(path),"w") as f:
@@ -21,8 +23,7 @@ def main():
 		print("For {} there are {} remaining duplicate species".format(path,diff))
 		t2.write(outfile="{}.2.fa.tre".format(path))
 
-def make_species_set(path):
-	t = PhyloTree("{}.fa.tre".format(path))
+def make_species_set(t):
 	leaves=[]
 	for leaf in t:
 		leaves.append(leaf)
@@ -32,8 +33,7 @@ def make_species_set(path):
 	set_l=set(l)
 	return(set_l)
 
-def remove_species_dups(path):
-	t = PhyloTree("{}.fa.tre".format(path))
+def remove_species_dups(t):
 	t.set_species_naming_function(lambda node: re.sub("\d","",node.name))
 	t2 = t.collapse_lineage_specific_expansions() 
 	leaves2=[]

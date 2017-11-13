@@ -19,6 +19,7 @@ def main():
 	for gene in gene_list:
 		try:
 			newpath="{}/{}/{}".format(path,gene,gene)
+			print("Pruning {}...".format(gene))
 			copy_list,species_list=make_species_list(newpath)
 			new_copy_list=cut_stray_other(newpath,copy_list,species_list)
 			with open(newpath+"_single.txt","w") as f:
