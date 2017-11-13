@@ -26,7 +26,7 @@ def main():
 		t3.write(outfile="{}.2.fa.tre".format(path))
 
 def removeShort(t,path):
-	print("Filtering out duplicate sequences that are <25% the average length for all sequences...")
+	print("Filtering out duplicate sequences that are <{} the average length for all sequences...".format(sys.argv[2]))
 	with open("{}.fa.aln".format(path), "r") as f:
 		aa_list=[str(record.seq) for record in SeqIO.parse(f, "fasta")]
 		aaLen_list=map(lambda x: len(re.sub("\-","",x)),aa_list)
@@ -34,8 +34,8 @@ def removeShort(t,path):
 	keep_list=[]
 	with open("{}.fa.aln".format(path), "r") as f:	
 		for record in SeqIO.parse(f, "fasta"):
-			aa=re.sub("\-","",record.seq)
-			if len(aa) >.3*aaLen_median:
+			aa=re.sub("\-","",str(record.seq))
+			if len(aa) > sys.argv[2]*aaLen_median:
 				keep_list.append(record.id)
 	t.prune(keep_list,preserve_branch_length=True)
 	return(t)
