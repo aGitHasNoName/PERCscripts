@@ -38,6 +38,8 @@ def removeShort(t,path):
 			aa=re.sub("\-","",str(record.seq))
 			if len(aa) > float(sys.argv[2])*aaLen_median:
 				keep_list.append(record.id)
+	dif=len(aa_list)-len(keep_list)
+	print("{} gene copies were removed for length.".format(str(dif)))
 	t.prune(keep_list,preserve_branch_length=True)
 	return(t)
 	
