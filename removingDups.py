@@ -5,7 +5,8 @@ import os
 import sys
 from Bio import SeqIO
 
-###This script removes within species duplications. 
+###This script removes within species duplications and sequences that are significantly 
+###shorter than the median sequence length. 
 ###sys.argv[1] is path to a tree file called {}.fa.tre and alignment file called {}.fa.aln.
 ###It's also path to where the output tree will be made called {}.2.tre
 ###sys.argv[2] is cut off, as decimal, for short sequence length.
