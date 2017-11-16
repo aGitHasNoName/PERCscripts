@@ -23,28 +23,40 @@ def main():
 	
 def yes_choice(tree_file_name, gene):
 	t=PhyloTree(tree_file_name)
+	R = t.get_midpoint_outgroup()
+	t.set_outgroup(R)
 	gene_names = t.get_leaf_names()
 	group_list = clade_to_tree(t)
 	###tree1
 	cut_list = [i for i in gene_names if i not in group_list]
 	tree=PhyloTree(tree_file_name)
 	tree.prune(cut_list, preserve_branch_length=True)
-	tree.write(format=1, outfile=tree_file_name)
-	###tree2
-	cut_list2 = [i for i in gene_names if i in group_list]
-	tree2=PhyloTree(tree_file_name)
-	tree2.prune(cut_list2, preserve_branch_length=True)
 	if gene[-3] == "_":
 		n = int(gene[-1])+1
-		gene2 = gene[:-1]+str(n)
+		gene1 = gene[:-1]+str(n)
 	else:
-		gene2 = gene+"_10"
-	directory = ("{}/{}".format(sys.argv[1], gene2))
+		gene1 = gene+"_10"
+	new_file = "{}/{}/{}.3.fa.tre".format(sys.argv[1], gene1, gene1)
+	directory = ("{}/{}".format(sys.argv[1], gene1))
 	os.system("mkdir {}".format(directory))
-	new_file = "{}/{}/{}.3.fa.tre".format(sys.argv[1], gene2, gene2)
-	tree2.write(format=1, outfile=new_file)
+	tree.write(format=1, outfile=new_file)
 	with open(sys.argv[2], "a") as todo:
-		todo.append("\n{}".format(gene2))
+		todo.write("\n{}".format(gene1))
+	###tree2
+	cut_list2 = [i for i in gene_names if i not in cut_list]
+	tree2=PhyloTree(tree_file_name)
+	tree2.prune(cut_list2, preserve_branch_length=True)
+	if gene1[-3] == "_":
+		n = int(gene1[-1])+1
+		gene2 = gene1[:-1]+str(n)
+	else:
+		gene2 = gene1+"_10"
+	directory2 = ("{}/{}".format(sys.argv[1], gene2))
+	os.system("mkdir {}".format(directory2))
+	new_file2 = "{}/{}/{}.3.fa.tre".format(sys.argv[1], gene2, gene2)
+	tree2.write(format=1, outfile=new_file2)
+	with open(sys.argv[2], "a") as todo:
+		todo.write("\n{}".format(gene2))
 
 def no_choice(gene):
 	with open(sys.argv[3], "a") as master:
