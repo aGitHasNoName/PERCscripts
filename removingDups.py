@@ -9,7 +9,7 @@ import sys
 
 def main():
 	path = sys.argv[1]
-	t = PhyloTree("{}.fa.tre".format(path))
+	t = PhyloTree("{}.2.fa.tre".format(path))
 	species_set = make_species_set(t)
 	copy_list,t2 = remove_species_dups(t)
 	if len(copy_list) == len(species_set):
