@@ -62,6 +62,8 @@ def yesMake(cut_list, gene, tree_file_name):
 	directory = ("{}/{}".format(sys.argv[1], gene1))
 	os.system("mkdir {}".format(directory))
 	tree.write(format=1, outfile=new_file)
+	with open(sys.argv[3], "a") as master:
+		master.write("\n{}".format(gene1))
 	return(gene1)
 
 def no_choice(gene):
