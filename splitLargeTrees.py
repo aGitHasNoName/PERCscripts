@@ -44,9 +44,9 @@ def yes_choice(tree_file_name, gene, algae_choice):
 		print("\nLet's define the outlier group. \nFirst you can add any spceices that are in a monophyletic clade")
 		outlier_list = clade_to_tree(t)
 		other_copies = raw_input("If there are other genes in the outlier group, enter them here, separated by a space, or else enter n.")
-			if other_copies != "n":
-				other_list = other_copies.split(" ")
-				outlier_copies = outlier_copies + other_list
+		if other_copies != "n":
+			other_list = other_copies.split(" ")
+			outlier_list = outlier_list + other_list
 	else:
 		outlier_list=[]
 	print("\nSelect one monophyletic family to define. \nYou will have a later chance to split this family again if needed.")
@@ -96,8 +96,8 @@ def no_choice(gene):
 def user_choice(t, gene):
 	print("\nShowing the gene tree for {}.".format(gene))
 	view_rooted_tree(t)
-	algae_choice = raw_input("\nIs there an algae group that is sister to multiple families? (y/n)")
 	choice = raw_input("\nWould you like to split this gene family into multiple families? (y/n)")
+	algae_choice = raw_input("\nIs there an algae group that is sister to all shown families? (y/n)")
 	return(algae_choice, choice)	
 	
 ######Viewing rooted tree in png file#####################################
