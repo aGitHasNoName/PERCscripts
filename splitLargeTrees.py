@@ -39,6 +39,7 @@ def yes_choice(tree_file_name, gene, algae_choice):
 		algae_list = clade_to_tree(t)
 	else:
 		algae_list = []
+	print("Select one family to define. You will have a later chance to split this family again if needed.")
 	group_list = clade_to_tree(t)
 	###tree1
 	cut_list = [i for i in gene_names if i not in group_list]
