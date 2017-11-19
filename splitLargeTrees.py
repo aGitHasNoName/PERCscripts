@@ -35,7 +35,10 @@ def yes_choice(tree_file_name, gene, algae_choice):
 	t.set_outgroup(R)
 	gene_names = t.get_leaf_names()
 	if algae_choice[0] == "y":
+		print("\nFirst, let's define the algae clade.")
 		algae_list = clade_to_tree(t)
+	else:
+		algae_list = []
 	group_list = clade_to_tree(t)
 	###tree1
 	cut_list = [i for i in gene_names if i not in group_list]
