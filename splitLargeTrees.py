@@ -39,13 +39,17 @@ def yes_choice(tree_file_name, gene, algae_choice):
 		algae_list = clade_to_tree(t)
 	else:
 		algae_list = []
-	outlier_choice = raw_input("\nIs there another group that is sister to multiple families? (y/n)")
+	outlier_choice = raw_input("\nIs there another monophyletic or non-monophyletic outlier group that is sister to all families shown? (y/n)")
 	if outlier_choice[0] == "y":
-		print("\nLet's define the outlier clade.")
+		print("\nLet's define the outlier group. \nFirst you can add any spceices that are in a monophyletic clade")
 		outlier_list = clade_to_tree(t)
+		other_copies = raw_input("If there are other genes in the outlier group, enter them here, separated by a space, or else enter n.")
+			if other_copies != "n":
+				other_list = other_copies.split(" ")
+				outlier_copies = outlier_copies + other_list
 	else:
 		outlier_list=[]
-	print("Select one family to define. \nYou will have a later chance to split this family again if needed.")
+	print("\nSelect one monophyletic family to define. \nYou will have a later chance to split this family again if needed.")
 	group_list = clade_to_tree(t)
 	###tree1
 	cut_list = [i for i in gene_names if i not in group_list]
