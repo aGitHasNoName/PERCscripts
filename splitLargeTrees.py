@@ -63,12 +63,12 @@ def yesMake(cut_list, gene, tree_file_name):
 	os.system("mkdir {}".format(directory))
 	tree.write(format=1, outfile=new_file)
 	with open(sys.argv[3], "a") as master:
-		master.write("\n{}".format(gene1))
+		master.write("{}\n".format(gene1))
 	return(gene1)
 
 def no_choice(gene):
 	with open(sys.argv[3], "a") as master:
-		master.write("\n{}".format(gene))
+		master.write("{}\n".format(gene))
 	todo_list=[line.rstrip() for line in open(sys.argv[2], "r")]
 	todo_new=[i for i in todo_list if i != gene]
 	with open(sys.argv[2], "w") as todo:
