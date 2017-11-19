@@ -39,15 +39,21 @@ def yes_choice(tree_file_name, gene, algae_choice):
 		algae_list = clade_to_tree(t)
 	else:
 		algae_list = []
-	print("Select one family to define. You will have a later chance to split this family again if needed.")
+	outlier_choice = raw_input("\nIs there another group that is sister to multiple families? (y/n)")
+	if outlier_choice[0] == "y":
+		print("\nLet's define the outlier clade.")
+		outlier_list = clade_to_tree(t)
+	else:
+		outlier_list=[]
+	print("Select one family to define. \nYou will have a later chance to split this family again if needed.")
 	group_list = clade_to_tree(t)
 	###tree1
 	cut_list = [i for i in gene_names if i not in group_list]
-	cut_list = cut_list + algae_list
+	cut_list = cut_list + algae_list + outlier_list
 	gene1 = yesMake(cut_list, gene, tree_file_name)
 	###tree2
 	cut_list1 = [i for i in gene_names if i not in cut_list]
-	cut_list1 = cut_list1 + algae_list
+	cut_list1 = cut_list1 + algae_list + outlier_list
 	gene2 = yesMake(cut_list1, gene1, tree_file_name)
 	with open(sys.argv[2], "r") as f:
 		todo_list=[line.rstrip() for line in f]
