@@ -22,24 +22,28 @@ def main():
 			file_name = "{}/{}/{}".format(sys.argv[1], gene, gene)
 			tree_file_name = "{}.3.fa.tre".format(file_name)
 			t = PhyloTree(tree_file_name)
-			split_choice = user_choice(t, gene)
+			algae_choice, split_choice = user_choice(t, gene)
 			if split_choice[0] == "y":
-				yes_choice(tree_file_name, gene)
+				yes_choice(tree_file_name, gene, algae_choice)
 			else:
 				no_choice(gene)
 	
 	
-def yes_choice(tree_file_name, gene):
+def yes_choice(tree_file_name, gene, algae_choice):
 	t=PhyloTree(tree_file_name)
 	R = t.get_midpoint_outgroup()
 	t.set_outgroup(R)
 	gene_names = t.get_leaf_names()
+	if algae_choice[0] == "y":
+		algae_list = clade_to_tree(t)
 	group_list = clade_to_tree(t)
 	###tree1
 	cut_list = [i for i in gene_names if i not in group_list]
+	cut_list = cut_list + algae_list
 	gene1 = yesMake(cut_list, gene, tree_file_name)
 	###tree2
 	cut_list1 = [i for i in gene_names if i not in cut_list]
+	cut_list1 = cut_list1 + algae_list
 	gene2 = yesMake(cut_list1, gene1, tree_file_name)
 	with open(sys.argv[2], "r") as f:
 		todo_list=[line.rstrip() for line in f]
@@ -78,8 +82,9 @@ def no_choice(gene):
 def user_choice(t, gene):
 	print("\nShowing the gene tree for {}.".format(gene))
 	view_rooted_tree(t)
+	algae_choice = raw_input("\nIs there an algae group that is sister to multiple families? (y/n)")
 	choice = raw_input("\nWould you like to split this gene family into multiple families? (y/n)")
-	return(choice)	
+	return(algae_choice, choice)	
 	
 ######Viewing rooted tree in png file#####################################
 def view_rooted_tree(t):
