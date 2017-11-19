@@ -9,21 +9,21 @@ from ete3 import PhyloTree
 
 
 def main():
-	nextChoice = "y"
-	while nextChoice[0] == "y":
+	next_choice = "y"
+	while next_choice[0] == "y":
 		with open(sys.argv[2],"r") as f:
-			gene_list=[line.rstrip() for line in f]
+			gene_list = [line.rstrip() for line in f]
 		if len(gene_list) == 0:
-			choice = "n"
+			next_choice = "n"
 			print("List complete")
 		else:
-			gene=gene_list[0]
+			gene = gene_list[0]
 			print("Working on gene {}".format(gene))
 			file_name = "{}/{}/{}".format(sys.argv[1], gene, gene)
 			tree_file_name = "{}.3.fa.tre".format(file_name)
 			t = PhyloTree(tree_file_name)
-			choice = user_choice(t, gene)
-			if choice[0] == "y":
+			split_choice = user_choice(t, gene)
+			if split_choice[0] == "y":
 				yes_choice(tree_file_name, gene)
 			else:
 				no_choice(gene)
