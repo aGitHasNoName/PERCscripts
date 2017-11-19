@@ -9,16 +9,24 @@ from ete3 import PhyloTree
 
 
 def main():
-	with open(sys.argv[2],"r") as f:
-		gene = f.readline().rstrip()
-	file_name = "{}/{}/{}".format(sys.argv[1], gene, gene)
-	tree_file_name = "{}.3.fa.tre".format(file_name)
-	t = PhyloTree(tree_file_name)
-	choice = user_choice(t, gene)
-	if choice[0] == "y":
-		yes_choice(tree_file_name, gene)
-	else:
-		no_choice(gene)
+	nextChoice = "y"
+	while nextChoice[0] == "y":
+		with open(sys.argv[2],"r") as f:
+			gene_list=[line.rstrip() for line in f]
+		if len(gene_list) == 0:
+			choice = "n"
+			print("List complete")
+		else:
+			gene=gene_list[0]
+			print("Working on gene {}".format(gene))
+			file_name = "{}/{}/{}".format(sys.argv[1], gene, gene)
+			tree_file_name = "{}.3.fa.tre".format(file_name)
+			t = PhyloTree(tree_file_name)
+			choice = user_choice(t, gene)
+			if choice[0] == "y":
+				yes_choice(tree_file_name, gene)
+			else:
+				no_choice(gene)
 	
 	
 def yes_choice(tree_file_name, gene):
