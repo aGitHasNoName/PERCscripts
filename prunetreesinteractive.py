@@ -156,14 +156,31 @@ def pre_prune(gene):
 		full_tree=PhyloTree("{}/{}.3.fa.tre".format(item,item))
 		view_rooted_tree(full_tree)
 		print("Tree for {}".format(item))
+		algae_choice = raw_input("\nIs there an algae group that is sister to all shown families? (y/n)")
+		outlier_choice = raw_input("\nIs there another monophyletic or non-monophyletic outlier group that is sister to all families shown? (y/n)")
 		c=raw_input("Split off a monophyletic clade? (y/n)")
 		while c[0]=="y":
+			if algae_choice[0] == "y":
+				print("\nFirst, let's define the algae clade.")
+				algae_list = clade_to_tree(clade_tree)
+			else:
+				algae_list = []
+			if outlier_choice[0] == "y":
+				print("\nLet's define the outlier group. \nFirst you can add any spceices that are in a monophyletic clade")
+				outlier_list = clade_to_tree(clade_tree)
+				other_copies = raw_input("If there are other genes in the outlier group, enter them here, separated by a space, or else enter n.")
+				if other_copies != "n":
+					other_list = other_copies.split(" ")
+					outlier_list = outlier_list + other_list
+			else:
+				outlier_list=[]
 			b="{}_all{}".format(gene, str(m))
 			l.append(b)
 			tree1=PhyloTree("{}/{}.3.fa.tre".format(item,item))
 			R=tree1.get_midpoint_outgroup()
 			tree1.set_outgroup(R)
 			group_list=clade_to_tree(tree1)
+			group_list=group_list + algae_list + outlier_list
 			gene_names=tree1.get_leaf_names()
 			if len(group_list)==len(gene_names):
 				c1=raw_input("\nList includes all copies on tree.\nMake gene with all copies? (y/n)")
@@ -174,6 +191,7 @@ def pre_prune(gene):
 					c="y"
 			else:
 				cut_list=[i for i in gene_names if i not in group_list]
+				cut_list = cut_list + algae_list + outlier_list
 				os.system("mkdir {}".format(b))
 				tree2=PhyloTree("{}/{}.3.fa.tre".format(item,item))
 				R=tree2.get_midpoint_outgroup()
@@ -186,6 +204,10 @@ def pre_prune(gene):
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
 				c=raw_input("Split off a monophyletic clade? (y/n)")
+				if c[0] == "y":
+					algae_choice = raw_input("\nIs there an algae group that is sister to all shown families? (y/n)")
+					outlier_choice = raw_input("\nIs there another monophyletic or non-monophyletic outlier group that is sister to all families shown? (y/n)")
+
 	with open("genes_todo.txt", "a") as p:
 		for i in l:
 			p.write(i+"\n")
