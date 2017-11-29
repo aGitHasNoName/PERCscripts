@@ -180,7 +180,7 @@ def pre_prune(gene):
 			tree1=PhyloTree("{}/{}.3.fa.tre".format(item,item))
 			R=tree1.get_midpoint_outgroup()
 			tree1.set_outgroup(R)
-			print("\nFor the monophyletic gene copy:)
+			print("\nFor the monophyletic gene copy:")
 			group_list=clade_to_tree(tree1)
 			group_list=group_list + algae_list + outlier_list
 			gene_names=tree1.get_leaf_names()
