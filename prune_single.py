@@ -29,7 +29,7 @@ def main():
 			print("No tree for "+newpath)
 
 def make_species_list(path):
-	t = PhyloTree("{}.2.fa.tre".format(path))
+	t = PhyloTree("{}.3.fa.tre".format(path))
 	leaves=[]
 	for leaf in t:
 		leaves.append(leaf)
@@ -97,7 +97,7 @@ def cut_stray_other(gene, species_keep2, species_list):
 	print ("\nNumber of extra gene copies per species:")
 	count_dict=view_counts(species_keep, species_list)
 	print(count_dict)
-	clade_tree=PhyloTree(gene+".2.fa.tre")
+	clade_tree=PhyloTree(gene+".3.fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
 	if len(species_keep)>1:
 		view_rooted_tree(clade_tree)
