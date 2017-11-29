@@ -1,4 +1,7 @@
-import re, sys, itertools, os
+import re
+import sys
+import itertools
+import os
 from ete3 import PhyloTree
 ########################################################
 #This script takes a fasta file and walks you through the pruning of the gene.
@@ -66,7 +69,7 @@ def prune_main(gene,speciesList,cladeDict):
 		single_copy(gene,copy_list,cladeDict)
 	else:
 		print ("\nShowing the gene tree.")
-		clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
+		clade_tree=PhyloTree(gene+"/"+gene+".3.fa.tre")
 		view_rooted_tree(clade_tree)
 		choice2=raw_input("\nWould you like to split this gene family into multiple families? (y/n)")
 		if choice2[0]=="y":
@@ -79,7 +82,7 @@ def prune_main(gene,speciesList,cladeDict):
 
 ######MAKE LIST OF COPIES IN ORTHOGROUP########################################
 def copies_in_group(gene):
-	with open("{}/{}.fa.tre".format(gene,gene),"r") as f:
+	with open("{}/{}.3.fa.tre".format(gene,gene),"r") as f:
 		f=f.read()
 		list1=[i for i in f.split(",")]
 		list2=[i.split(":")[0] for i in list1]
@@ -141,23 +144,23 @@ def single_copy(gene,copy_list,cladeDict):
 
 ########SPLITTING LARGE GENES FAMILIES####################################
 def pre_prune(gene):
-	full_tree=PhyloTree(gene+"/"+gene+".fa.tre")
+	full_tree=PhyloTree(gene+"/"+gene+".3.fa.tre")
 	gene_names=full_tree.get_leaf_names()
 	m=100
 	start_gene="{}_all{}".format(gene,str(m))
 	os.system("mkdir {}".format(start_gene))
-	full_tree.write(format=1, outfile="{}/{}.fa.tre".format(start_gene,start_gene))
+	full_tree.write(format=1, outfile="{}/{}.3.fa.tre".format(start_gene,start_gene))
 	m=m+1
 	l=[start_gene]
 	for item in l:
-		full_tree=PhyloTree("{}/{}.fa.tre".format(item,item))
+		full_tree=PhyloTree("{}/{}.3.fa.tre".format(item,item))
 		view_rooted_tree(full_tree)
 		print("Tree for {}".format(item))
 		c=raw_input("Split off a monophyletic clade? (y/n)")
 		while c[0]=="y":
 			b="{}_all{}".format(gene, str(m))
 			l.append(b)
-			tree1=PhyloTree("{}/{}.fa.tre".format(item,item))
+			tree1=PhyloTree("{}/{}.3.fa.tre".format(item,item))
 			R=tree1.get_midpoint_outgroup()
 			tree1.set_outgroup(R)
 			group_list=clade_to_tree(tree1)
@@ -172,13 +175,13 @@ def pre_prune(gene):
 			else:
 				cut_list=[i for i in gene_names if i not in group_list]
 				os.system("mkdir {}".format(b))
-				tree2=PhyloTree("{}/{}.fa.tre".format(item,item))
+				tree2=PhyloTree("{}/{}.3.fa.tre".format(item,item))
 				R=tree2.get_midpoint_outgroup()
 				tree2.set_outgroup(R)
 				tree2.prune(group_list,preserve_branch_length=True)
-				tree2.write(format=1, outfile="{}/{}.fa.tre".format(b,b))
+				tree2.write(format=1, outfile="{}/{}.3.fa.tre".format(b,b))
 				tree1.prune(cut_list,preserve_branch_length=True)
-				tree1.write(format=1, outfile="{}/{}.fa.tre".format(item,item))
+				tree1.write(format=1, outfile="{}/{}.3.fa.tre".format(item,item))
 				m=m+1
 				print ("\nTree now looks like this.")
 				view_rooted_tree(tree1)
@@ -207,7 +210,7 @@ def make_clade_groups(gene,cladeDict,copy_list,species_list):
 
 ########OTHERS##############################################################
 def make_other_groups(gene, species_keep, species_list):
-	full_tree=PhyloTree(gene+"/"+gene+".fa.tre")
+	full_tree=PhyloTree(gene+"/"+gene+".3.fa.tre")
 	######Checking if the list is empty######
 	if len(species_keep) == 0:
 		print ("\nThere are no other genes in this gene family.")
@@ -265,7 +268,7 @@ def make_all_lists(gene, cladeDict):
 ######Remove stray genes from clade tree##############################
 def cut_stray_genes(gene, species_keep, species_list):
 	######Showing the tree######
-	clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
+	clade_tree=PhyloTree(gene+"/"+gene+".3.fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
 	if len(species_keep)>1:
 		view_rooted_tree(clade_tree)
@@ -295,7 +298,7 @@ def cut_stray_genes(gene, species_keep, species_list):
 ######Remove stray genes from other tree##############################
 def cut_stray_other(gene, species_keep, species_list):
 	######Showing the tree######
-	clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
+	clade_tree=PhyloTree(gene+"/"+gene+".3.fa.tre")
 	clade_tree.prune(species_keep,preserve_branch_length=True)
 	if len(species_keep)>1:
 		view_rooted_tree(clade_tree)
@@ -328,7 +331,7 @@ def cut_stray_other(gene, species_keep, species_list):
 
 ######Making groups#####################################################
 def define_groups(gene, cut_list, species_list, species_keep, clade_name):
-	clade_tree=PhyloTree(gene+"/"+gene+".fa.tre")
+	clade_tree=PhyloTree(gene+"/"+gene+".3.fa.tre")
 	clade_tree.prune(cut_list,preserve_branch_length=True)
 	n=1
 	######Designating whole clade duplications######
