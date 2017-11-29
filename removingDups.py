@@ -14,9 +14,7 @@ def main():
 	copy_list,t2 = remove_species_dups(t)
 	if len(copy_list) == len(species_set):
 		print("{} is SINGLE".format(path))
-		with open("{}_single.txt".format(path),"w") as f:
-			for i in copy_list:
-				f.write("{}\n".format(i))
+		t2.write(outfile = "{}.3.fa.tre".format(path))
 	else:
 		diff = len(copy_list)-len(species_set)
 		print("For {} there are {} remaining duplicate species".format(path, diff))
