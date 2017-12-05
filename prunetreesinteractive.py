@@ -167,12 +167,19 @@ def pre_prune(gene):
 			else:
 				algae_list = []
 			if outlier_choice[0] == "y":
-				print("\nLet's define the outlier group. \nFirst you can add any spceices that are in a monophyletic clade")
-				outlier_list = clade_to_tree(full_tree)
-				other_copies = raw_input("If there are other genes in the outlier group, enter them here, separated by a space, or else enter n.")
-				if other_copies != "n":
+				print("\nLet's define the outlier group. ")
+				outlier_list = []
+				out_choice = raw_input("\nIs there a monophyletic clade in the outlier group? (y/n)")
+				while out_choice[0] == "y":
+					outlier_list2 = clade_to_tree(full_tree)
+					outlier_list = outlier_list + outlier_list2
+					out_choice = rawinput("\nIs there another monopyletic clade to add to the outlier group? (y/n)")
+				other_choice = raw_input("Are there additional genes in the outlier group? (y/n)")
+				while other_choice[0] == "y":
+					other_copies == raw_input("\nEnter genes to include, separated by a space. Enter only up to ten genes at a time.")
 					other_list = other_copies.split(" ")
 					outlier_list = outlier_list + other_list
+					other_choice = raw_input("Are there more genes to enter? (y/n)")
 			else:
 				outlier_list=[]
 			b="{}_all{}".format(gene, str(m))
