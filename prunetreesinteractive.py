@@ -173,10 +173,10 @@ def pre_prune(gene):
 				while out_choice[0] == "y":
 					outlier_list2 = clade_to_tree(full_tree)
 					outlier_list = outlier_list + outlier_list2
-					out_choice = rawinput("\nIs there another monopyletic clade to add to the outlier group? (y/n)")
+					out_choice = raw_input("\nIs there another monopyletic clade to add to the outlier group? (y/n)")
 				other_choice = raw_input("Are there additional genes in the outlier group? (y/n)")
 				while other_choice[0] == "y":
-					other_copies == raw_input("\nEnter genes to include, separated by a space. Enter only up to ten genes at a time.")
+					other_copies = raw_input("\nEnter genes to include, separated by a space. Enter only up to ten genes at a time.")
 					other_list = other_copies.split(" ")
 					outlier_list = outlier_list + other_list
 					other_choice = raw_input("Are there more genes to enter? (y/n)")
