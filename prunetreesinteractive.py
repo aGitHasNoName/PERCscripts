@@ -177,8 +177,11 @@ def pre_prune(gene):
 				other_choice = raw_input("Are there additional genes in the outlier group? (y/n)")
 				while other_choice[0] == "y":
 					other_copies = raw_input("\nEnter genes to include, separated by a space. Enter only up to ten genes at a time.")
-					other_list = other_copies.split(" ")
-					outlier_list = outlier_list + other_list
+					try:
+						other_list = other_copies.split(" ")
+						outlier_list = outlier_list + other_list
+					except ValueError:
+						other_choice = raw_input("\nAt least one gene is not found on the tree. Reenter genes? y/n")
 					other_choice = raw_input("Are there more genes to enter? (y/n)")
 			else:
 				outlier_list=[]
