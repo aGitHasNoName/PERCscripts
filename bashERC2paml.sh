@@ -1,6 +1,6 @@
 
 ##1 prune tree and align
-python ~/ERCpaper/pythonScripts/fastaToPrunedFasta.py $1.fa $1_prune.txt | tee $1.pr.fa | mafft --auto - > $1.pr.fa.aln
+python ~/ERCpaper/pythonScripts/fastaToPrunedFasta.py $1.fa $1.txt | tee $1.pr.fa | mafft --auto - > $1.pr.fa.aln
 ##2 trim tree
 trimal -in $1.pr.fa.aln -out $1.pr.fa.trm -gt 0.8
 ##3 fill in blanks for missing species and make phylip
