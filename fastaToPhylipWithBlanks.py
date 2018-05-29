@@ -9,9 +9,9 @@ from Bio.SeqRecord import SeqRecord
 ##argv[2] is list of all species
 #########################################
 def add_blanks():
-	trimmed_file=open(sys.argv[1],'r')
 	species_list=[line.rstrip() for line in open(sys.argv[2])]
-	trimmed_dict=SeqIO.to_dict(SeqIO.parse(trimmed_file,"fasta"))
+	with open(sys.argv[1],'r') as f:
+		trimmed_dict=SeqIO.to_dict(SeqIO.parse(f,"fasta"))
 	sp1=species_list[0]
 	l=len(trimmed_dict[sp1].seq)
 	blank=str("-"*l)
@@ -25,8 +25,7 @@ def add_blanks():
 	for record in sorted_species_list:
 		sys.stdout.write("{}  {}\n".format(trimmed_dict[record].id, trimmed_dict[record].seq))
 
-	
-	trimmed_file.close()
+
 #########################################
 add_blanks()
 
