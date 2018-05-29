@@ -12,7 +12,7 @@ def prune_seq():
 		for i in select_list:
 			if i==record.id:
 				j=str(record.id)
-				new=j[0:-3]
+				new=''.join(x for x in j if not x.isdigit())
 				record.id=new
 				SeqIO.write(record,sys.stdout,"fasta")
 	old_seq.close()
