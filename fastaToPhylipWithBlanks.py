@@ -12,7 +12,8 @@ def add_blanks():
 	species_list=[line.rstrip() for line in open(sys.argv[2])]
 	with open(sys.argv[1],'r') as f:
 		trimmed_dict=SeqIO.to_dict(SeqIO.parse(f,"fasta"))
-	sp1=species_list[0]
+	trimmed_list=[key for key in trimmed_dict.keys()]
+	sp1=trimmed_list[0]
 	l=len(trimmed_dict[sp1].seq)
 	blank=str("-"*l)
 	l2=len(species_list)
